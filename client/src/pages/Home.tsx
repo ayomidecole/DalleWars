@@ -27,13 +27,13 @@ export default function Home() {
           onGenerateComplete={handleGenerateComplete} 
         />
         
-        <ScoreDisplay />
-        
         {isGenerating ? (
           <LoadingState />
         ) : (
           <ImageComparison loading={isGenerating} />
         )}
+        
+        <ScoreDisplay />
       </main>
       
       <Footer />

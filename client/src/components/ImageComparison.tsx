@@ -52,7 +52,7 @@ export default function ImageComparison({ loading }: ImageComparisonProps) {
   }
   
   if (!loading && (!imagePairs || imagePairs.length === 0)) {
-    return <EmptyState />;
+    return null;
   }
   
   return (
