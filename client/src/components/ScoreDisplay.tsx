@@ -18,34 +18,39 @@ export default function ScoreDisplay() {
   return (
     <section className="mb-12">
       <div className="max-w-3xl mx-auto">
-        <Card className="bg-gray-50 border border-gray-200">
-          <CardContent className="py-4">
-            <h3 className="text-lg font-medium mb-2">Current Score</h3>
+        <Card className="bg-gray-100 border border-gray-200 shadow-sm">
+          <CardContent className="py-6">
+            <h3 className="text-xl font-medium mb-4 text-gray-800">Current Score</h3>
             
             <div className="grid grid-cols-2 gap-6">
               <div className="text-center">
-                <div className="text-3xl font-semibold text-secondary">{dalle2}</div>
-                <div className="text-accent text-sm mt-1">DALL·E 2</div>
+                <div className="text-4xl font-semibold text-gray-800">{dalle2}</div>
+                <div className="text-gray-700 text-sm font-medium mt-1">DALL·E 2</div>
               </div>
               
               <div className="text-center">
-                <div className="text-3xl font-semibold text-primary">{dalle3}</div>
-                <div className="text-accent text-sm mt-1">DALL·E 3</div>
+                <div className="text-4xl font-semibold text-primary">{dalle3}</div>
+                <div className="text-green-700 text-sm font-medium mt-1">DALL·E 3</div>
               </div>
             </div>
             
-            <div className="w-full bg-gray-200 rounded-full h-2.5 mt-4">
+            <div className="w-full bg-gray-300 rounded-full h-3 mt-6">
               <div 
-                className="bg-secondary h-2.5 rounded-full" 
+                className="bg-gray-700 h-3 rounded-full" 
                 style={{ width: `${dalle2Percentage}%` }}
               ></div>
               <div 
-                className="bg-primary h-2.5 rounded-full ml-auto -mt-2.5" 
+                className="bg-primary h-3 rounded-full ml-auto -mt-3" 
                 style={{ width: `${dalle3Percentage}%` }}
               ></div>
             </div>
             
-            <div className="text-xs text-accent text-center mt-2">
+            <div className="flex justify-between mt-1 text-xs font-medium">
+              <div className="text-gray-700">{dalle2Percentage}%</div>
+              <div className="text-primary">{dalle3Percentage}%</div>
+            </div>
+            
+            <div className="text-sm text-gray-700 text-center mt-4 font-medium">
               Based on {totalVotes} total votes
             </div>
           </CardContent>

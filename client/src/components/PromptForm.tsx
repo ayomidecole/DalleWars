@@ -58,13 +58,13 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
   return (
     <section className="mb-12">
       <div className="max-w-3xl mx-auto">
-        <h2 className="text-xl font-medium mb-6">Generate Comparison Images</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Generate Comparison Images</h2>
         
-        <Card>
+        <Card className="shadow-sm border-gray-200">
           <CardContent className="pt-6">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="prompt" className="block text-accent font-medium mb-2">
+                <label htmlFor="prompt" className="block text-gray-700 font-medium mb-2 text-lg">
                   Your prompt
                 </label>
                 <Textarea 
@@ -78,14 +78,14 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
               </div>
               
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-                <div className="flex items-center text-sm text-accent">
-                  <span>{prompt.length}</span> characters
+                <div className="flex items-center text-sm text-gray-600 font-medium">
+                  <span className="font-bold">{prompt.length}</span>&nbsp;characters
                 </div>
                 
                 <Button 
                   type="submit" 
                   disabled={generateMutation.isPending}
-                  className="bg-primary hover:bg-primary/90"
+                  className="bg-primary hover:bg-primary/90 text-white font-medium text-base px-5 py-2"
                 >
                   <Paintbrush className="mr-2 h-5 w-5" />
                   Generate Images
