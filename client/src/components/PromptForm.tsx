@@ -7,10 +7,11 @@ import { useMutation } from "@tanstack/react-query";
 import { generateImages } from "@/lib/openai";
 import { queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { ImagePair } from "@shared/schema";
 
 interface PromptFormProps {
   onGenerateStart: () => void;
-  onGenerateComplete: () => void;
+  onGenerateComplete: (imagePair?: ImagePair) => void;
 }
 
 export default function PromptForm({ onGenerateStart, onGenerateComplete }: PromptFormProps) {
@@ -19,11 +20,12 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
   
   const generateMutation = useMutation({
     mutationFn: generateImages,
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['/api/image-pairs'] });
       queryClient.invalidateQueries({ queryKey: ['/api/scores'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/latest-image-pair'] });
       setPrompt("");
-      onGenerateComplete();
+      onGenerateComplete(data as ImagePair);
       toast({
         title: "Images generated",
         description: "Your images have been successfully generated.",

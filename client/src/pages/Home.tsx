@@ -5,16 +5,21 @@ import PromptForm from "@/components/PromptForm";
 import ScoreDisplay from "@/components/ScoreDisplay";
 import ImageComparison from "@/components/ImageComparison";
 import LoadingState from "@/components/LoadingState";
+import { ImagePair } from "@shared/schema";
 
 export default function Home() {
   const [isGenerating, setIsGenerating] = useState(false);
+  const [currentImagePair, setCurrentImagePair] = useState<ImagePair | null>(null);
   
   const handleGenerateStart = () => {
     setIsGenerating(true);
   };
   
-  const handleGenerateComplete = () => {
+  const handleGenerateComplete = (imagePair?: ImagePair) => {
     setIsGenerating(false);
+    if (imagePair) {
+      setCurrentImagePair(imagePair);
+    }
   };
   
   return (
@@ -30,7 +35,7 @@ export default function Home() {
         {isGenerating ? (
           <LoadingState />
         ) : (
-          <ImageComparison loading={isGenerating} />
+          <ImageComparison loading={isGenerating} imagePair={currentImagePair} />
         )}
         
         <ScoreDisplay />

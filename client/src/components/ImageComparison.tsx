@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { submitVote } from "@/lib/openai";
 import { queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -11,18 +11,12 @@ import EmptyState from "./EmptyState";
 
 interface ImageComparisonProps {
   loading: boolean;
+  imagePair: ImagePair | null;
 }
 
-export default function ImageComparison({ loading }: ImageComparisonProps) {
+export default function ImageComparison({ loading, imagePair }: ImageComparisonProps) {
   const { toast } = useToast();
-  const [votedPairs, setVotedPairs] = useState<Record<number, "dalle2" | "dalle3">>({});
-  
-  const { data: latestImagePair } = useQuery<ImagePair>({
-    queryKey: ['/api/latest-image-pair'],
-    retry: false,
-    // Return undefined on error instead of throwing
-    throwOnError: false
-  });
+  const [votedPairs, setVotedPairs] = useState<Record<number, "dalle2" | "dalle3">>({}); 
   
   // Load saved votes from localStorage on component mount
   useEffect(() => {
@@ -104,7 +98,7 @@ export default function ImageComparison({ loading }: ImageComparisonProps) {
     return null;
   }
   
-  if (!loading && !latestImagePair) {
+  if (!loading && !imagePair) {
     return (
       <div className="flex justify-center my-8">
         <Card className="w-full max-w-2xl">
@@ -119,8 +113,8 @@ export default function ImageComparison({ loading }: ImageComparisonProps) {
     );
   }
   
-  // At this point we've confirmed latestImagePair exists
-  const pair = latestImagePair!;
+  // At this point we've confirmed imagePair exists
+  const pair = imagePair!;
   
   return (
     <section id="imagesComparison" className="my-8">
