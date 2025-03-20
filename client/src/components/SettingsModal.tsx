@@ -23,7 +23,7 @@ export default function SettingsModal() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon" className="text-accent hover:text-primary transition">
+        <Button variant="ghost" size="icon" className="text-gray-700 hover:text-primary transition">
           <Settings className="h-6 w-6" />
         </Button>
       </DialogTrigger>
@@ -37,50 +37,50 @@ export default function SettingsModal() {
         
         <div className="space-y-4 py-4">
           <div>
-            <label htmlFor="apiKey" className="block text-accent font-medium mb-2">OpenAI API Key</label>
+            <label htmlFor="apiKey" className="block text-gray-700 font-medium mb-2">OpenAI API Key</label>
             <input
               type="password"
               id="apiKey"
-              className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-gray-50"
               placeholder="Your API key is stored securely on the server"
               disabled
             />
-            <p className="mt-2 text-sm text-accent">
+            <p className="mt-2 text-sm text-gray-600">
               Your API key is never stored in the browser. It is securely managed on the server side.
             </p>
           </div>
           
           <div className="p-4 bg-gray-50 rounded-md border border-gray-200">
-            <h3 className="font-medium mb-2">API Status</h3>
+            <h3 className="font-medium mb-2 text-gray-800">API Status</h3>
             {apiStatus === "loading" && (
               <div className="flex items-center">
                 <span className="inline-block w-3 h-3 bg-gray-300 rounded-full mr-2"></span>
-                <span className="text-sm">Checking status...</span>
+                <span className="text-sm font-medium text-gray-700">Checking status...</span>
               </div>
             )}
             
             {apiStatus === "active" && (
               <div className="flex items-center">
                 <span className="inline-block w-3 h-3 bg-green-500 rounded-full mr-2"></span>
-                <span className="text-sm">Connected</span>
+                <span className="text-sm font-medium text-green-700">Connected</span>
               </div>
             )}
             
             {apiStatus === "missing-api-key" && (
               <div className="flex items-center">
                 <span className="inline-block w-3 h-3 bg-red-500 rounded-full mr-2"></span>
-                <span className="text-sm">API Key Missing</span>
+                <span className="text-sm font-medium text-red-700">API Key Missing</span>
               </div>
             )}
             
             {apiStatus === "error" && (
               <div className="flex items-center">
                 <span className="inline-block w-3 h-3 bg-red-500 rounded-full mr-2"></span>
-                <span className="text-sm">Connection Error</span>
+                <span className="text-sm font-medium text-red-700">Connection Error</span>
               </div>
             )}
             
-            <p className="mt-2 text-sm text-accent">
+            <p className="mt-2 text-sm text-gray-600">
               {apiStatus === "active" && "Your application is properly configured to generate images using the OpenAI API."}
               {apiStatus === "missing-api-key" && "The OpenAI API key is not configured. Please set the OPENAI_API_KEY environment variable."}
               {apiStatus === "error" && "Could not connect to the API. Please check your server configuration."}
