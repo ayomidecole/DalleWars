@@ -22,6 +22,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to get image pairs" });
     }
   });
+  
+  // Get the latest image pair
+  app.get("/api/latest-image-pair", async (req: Request, res: Response) => {
+    try {
+      const latestImagePair = await storage.getLatestImagePair();
+      if (!latestImagePair) {
+        return res.status(404).json({ message: "No image pairs found" });
+      }
+      res.json(latestImagePair);
+    } catch (error) {
+      console.error("Error getting latest image pair:", error);
+      res.status(500).json({ message: "Failed to get latest image pair" });
+    }
+  });
 
   // Get a specific image pair
   app.get("/api/image-pairs/:id", async (req: Request, res: Response) => {

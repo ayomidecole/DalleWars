@@ -18,6 +18,7 @@ export interface IStorage {
   getImagePairs(): Promise<ImagePair[]>;
   getImagePair(id: number): Promise<ImagePair | undefined>;
   createImagePair(imagePair: InsertImagePair): Promise<ImagePair>;
+  getLatestImagePair(): Promise<ImagePair | undefined>;
   
   // Votes
   getVotes(): Promise<Vote[]>;
@@ -61,6 +62,11 @@ export class MemStorage implements IStorage {
     };
     this.imagePairs.set(id, imagePair);
     return imagePair;
+  }
+  
+  async getLatestImagePair(): Promise<ImagePair | undefined> {
+    const pairs = await this.getImagePairs();
+    return pairs.length > 0 ? pairs[0] : undefined;
   }
 
   // Votes
@@ -146,6 +152,16 @@ export class PostgresStorage implements IStorage {
     } catch (error) {
       console.error('Error creating image pair:', error);
       throw error;
+    }
+  }
+  
+  async getLatestImagePair(): Promise<ImagePair | undefined> {
+    try {
+      const results = await this.db.select().from(imagePairs).orderBy(desc(imagePairs.createdAt)).limit(1);
+      return results.length > 0 ? results[0] : undefined;
+    } catch (error) {
+      console.error('Error fetching latest image pair:', error);
+      return undefined;
     }
   }
 
