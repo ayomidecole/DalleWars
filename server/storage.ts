@@ -8,7 +8,7 @@ import {
 import { neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
 import dotenv from 'dotenv';
-import { eq, desc, sql } from 'drizzle-orm';
+import { eq, desc } from 'drizzle-orm';
 
 // Load environment variables
 dotenv.config();
@@ -170,11 +170,8 @@ export class PostgresStorage implements IStorage {
   
   async hasVotedForImagePair(imagePairId: number): Promise<boolean> {
     try {
-      const voteCount = await this.db.select({ count: sql`count(*)` })
-        .from(votes)
-        .where(eq(votes.imagePairId, imagePairId));
-      
-      return parseInt(voteCount[0].count as string, 10) > 0;
+      const votesForPair = await this.getVotesByImagePairId(imagePairId);
+      return votesForPair.length > 0;
     } catch (error) {
       console.error(`Error checking if voted for image pair ${imagePairId}:`, error);
       return false;

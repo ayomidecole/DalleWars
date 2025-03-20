@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { submitVote } from "@/lib/openai";
@@ -20,24 +20,72 @@ export default function ImageComparison({ loading }: ImageComparisonProps) {
     queryKey: ['/api/image-pairs'],
   });
   
+  // Load saved votes from localStorage on component mount
+  useEffect(() => {
+    const savedVotes = localStorage.getItem('votedPairs');
+    if (savedVotes) {
+      try {
+        const parsedVotes = JSON.parse(savedVotes);
+        setVotedPairs(parsedVotes);
+      } catch (error) {
+        console.error('Failed to parse saved votes:', error);
+      }
+    }
+  }, []);
+  
   const voteMutation = useMutation({
     mutationFn: ({ imagePairId, votedForDalle3 }: { imagePairId: number; votedForDalle3: boolean }) => 
       submitVote(imagePairId, votedForDalle3),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['/api/scores'] });
-      setVotedPairs(prev => ({
-        ...prev,
+      
+      // Update state and save to localStorage
+      const newVotedPairs = {
+        ...votedPairs,
         [variables.imagePairId]: variables.votedForDalle3 ? "dalle3" : "dalle2"
-      }));
+      };
+      setVotedPairs(newVotedPairs);
+      localStorage.setItem('votedPairs', JSON.stringify(newVotedPairs));
+      
       toast({
         title: "Vote recorded",
         description: "Thank you for your vote!",
       });
     },
     onError: (error) => {
+      const errorMessage = error instanceof Error ? error.message : "Failed to submit your vote.";
+      
+      // If the error is about already voted, update the local state
+      if (error instanceof Error && 
+          (errorMessage.toLowerCase().includes('already voted'))) {
+        
+        // Get the image pair ID and vote from the current mutation
+        const imagePairId = voteMutation.variables?.imagePairId;
+        const votedForDalle3 = voteMutation.variables?.votedForDalle3;
+        
+        if (imagePairId !== undefined) {
+          // Update local state to mark this pair as voted
+          const newVotedPairs = {
+            ...votedPairs,
+            [imagePairId]: votedForDalle3 ? "dalle3" : "dalle2"
+          };
+          setVotedPairs(newVotedPairs);
+          localStorage.setItem('votedPairs', JSON.stringify(newVotedPairs));
+          
+          // Show a more friendly toast message
+          toast({
+            title: "Already voted",
+            description: "You have already voted for this image pair.",
+            variant: "default",
+          });
+          return;
+        }
+      }
+      
+      // Show error toast for other errors
       toast({
         title: "Vote failed",
-        description: error instanceof Error ? error.message : "Failed to submit your vote.",
+        description: errorMessage,
         variant: "destructive",
       });
     }
