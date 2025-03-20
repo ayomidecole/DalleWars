@@ -25,12 +25,12 @@ export default function ScoreDisplay() {
             <div className="grid grid-cols-2 gap-6">
               <div className="text-center">
                 <div className="text-4xl font-semibold text-gray-800">{dalle2}</div>
-                <div className="text-gray-700 text-sm font-medium mt-1">Image A</div>
+                <div className="text-gray-700 text-sm font-medium mt-1">DALL·E 2</div>
               </div>
               
               <div className="text-center">
                 <div className="text-4xl font-semibold text-primary">{dalle3}</div>
-                <div className="text-green-700 text-sm font-medium mt-1">Image B</div>
+                <div className="text-green-700 text-sm font-medium mt-1">DALL·E 3</div>
               </div>
             </div>
             
