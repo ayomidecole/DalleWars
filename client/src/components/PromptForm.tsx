@@ -77,11 +77,7 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
                 />
               </div>
               
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 pt-2">
-                <div className="flex items-center text-sm text-gray-700 font-medium bg-gray-100 px-3 py-1 rounded-full">
-                  <span className="font-bold">{prompt.length}</span>&nbsp;characters
-                </div>
-                
+              <div className="flex justify-end pt-2">
                 <Button 
                   type="submit" 
                   disabled={generateMutation.isPending}

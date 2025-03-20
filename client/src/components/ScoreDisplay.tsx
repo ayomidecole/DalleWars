@@ -16,10 +16,10 @@ export default function ScoreDisplay() {
   const dalle3Percentage = totalVotes > 0 ? Math.round((dalle3 / totalVotes) * 100) : 0;
   
   return (
-    <section className="mb-12">
-      <div className="max-w-3xl mx-auto">
+    <section className="my-8">
+      <div className="max-w-4xl mx-auto">
         <Card className="bg-gray-100 border border-gray-200 shadow-sm">
-          <CardContent className="py-6">
+          <CardContent className="py-5">
             <h3 className="text-xl font-medium mb-4 text-gray-800">Current Score</h3>
             
             <div className="grid grid-cols-2 gap-6">

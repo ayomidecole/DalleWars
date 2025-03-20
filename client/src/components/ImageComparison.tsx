@@ -56,17 +56,17 @@ export default function ImageComparison({ loading }: ImageComparisonProps) {
   }
   
   return (
-    <section id="imagesComparison">
+    <section id="imagesComparison" className="my-8">
       {imagePairs?.map((pair) => (
-        <div key={pair.id} className="mb-12">
-          <div className="max-w-5xl mx-auto">
-            <div className="p-5 mb-6 bg-gray-100 rounded-lg border border-gray-200 shadow-sm">
+        <div key={pair.id} className="mb-10">
+          <div className="max-w-4xl mx-auto">
+            <div className="p-4 mb-5 bg-gray-100 rounded-lg border border-gray-200 shadow-sm">
               <h3 className="text-lg font-semibold text-gray-800">
                 Prompt: <span className="text-gray-700 font-medium">{pair.prompt}</span>
               </h3>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* DALL-E 2 Image Card */}
               <div className="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden">
                 <div className="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
@@ -74,8 +74,8 @@ export default function ImageComparison({ loading }: ImageComparisonProps) {
                   <span className="text-xs px-3 py-1 bg-gray-200 rounded-full text-gray-800 font-semibold">Legacy Model</span>
                 </div>
                 
-                <div className="p-5">
-                  <div className="image-card relative overflow-hidden rounded-lg aspect-square border border-gray-200 shadow-sm">
+                <div className="p-4">
+                  <div className="image-card relative overflow-hidden rounded-lg border border-gray-200 shadow-sm max-w-xs mx-auto aspect-[4/3]">
                     <img 
                       src={pair.dalle2ImageUrl}
                       alt={`DALL·E 2 generated image for: ${pair.prompt}`}
@@ -84,19 +84,19 @@ export default function ImageComparison({ loading }: ImageComparisonProps) {
                   </div>
                 </div>
                 
-                <div className="px-5 pb-5 pt-2 flex justify-center">
+                <div className="px-4 pb-4 pt-2 flex justify-center">
                   <Button 
                     variant={votedPairs[pair.id] === "dalle2" ? "default" : "outline"}
-                    size="lg"
+                    size="default"
                     className={votedPairs[pair.id] === "dalle2" 
-                      ? "bg-gray-800 text-white hover:bg-gray-700 w-full py-6 text-base" 
-                      : "border-2 border-gray-800 text-gray-800 font-medium hover:bg-gray-800 hover:text-white w-full py-6 text-base"}
+                      ? "bg-gray-800 text-white hover:bg-gray-700 w-full py-2 text-sm" 
+                      : "border-2 border-gray-800 text-gray-800 font-medium hover:bg-gray-800 hover:text-white w-full py-2 text-sm"}
                     onClick={() => handleVote(pair.id, false)}
                     disabled={!!votedPairs[pair.id]}
                   >
                     {votedPairs[pair.id] === "dalle2" ? (
                       <>
-                        <Check className="mr-2 h-5 w-5" />
+                        <Check className="mr-1 h-4 w-4" />
                         Vote Recorded
                       </>
                     ) : (
@@ -113,8 +113,8 @@ export default function ImageComparison({ loading }: ImageComparisonProps) {
                   <span className="text-xs px-3 py-1 bg-green-100 rounded-full text-green-800 font-semibold">Latest Model</span>
                 </div>
                 
-                <div className="p-5">
-                  <div className="image-card relative overflow-hidden rounded-lg aspect-square border border-gray-200 shadow-sm">
+                <div className="p-4">
+                  <div className="image-card relative overflow-hidden rounded-lg border border-gray-200 shadow-sm max-w-xs mx-auto aspect-[4/3]">
                     <img 
                       src={pair.dalle3ImageUrl}
                       alt={`DALL·E 3 generated image for: ${pair.prompt}`}
@@ -123,19 +123,19 @@ export default function ImageComparison({ loading }: ImageComparisonProps) {
                   </div>
                 </div>
                 
-                <div className="px-5 pb-5 pt-2 flex justify-center">
+                <div className="px-4 pb-4 pt-2 flex justify-center">
                   <Button 
                     variant={votedPairs[pair.id] === "dalle3" ? "default" : "outline"}
-                    size="lg"
+                    size="default"
                     className={votedPairs[pair.id] === "dalle3" 
-                      ? "bg-primary text-white hover:bg-primary/90 w-full py-6 text-base" 
-                      : "border-2 border-primary text-primary font-medium hover:bg-primary hover:text-white w-full py-6 text-base"}
+                      ? "bg-primary text-white hover:bg-primary/90 w-full py-2 text-sm" 
+                      : "border-2 border-primary text-primary font-medium hover:bg-primary hover:text-white w-full py-2 text-sm"}
                     onClick={() => handleVote(pair.id, true)}
                     disabled={!!votedPairs[pair.id]}
                   >
                     {votedPairs[pair.id] === "dalle3" ? (
                       <>
-                        <Check className="mr-2 h-5 w-5" />
+                        <Check className="mr-1 h-4 w-4" />
                         Vote Recorded
                       </>
                     ) : (
