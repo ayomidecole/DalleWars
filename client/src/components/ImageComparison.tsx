@@ -67,18 +67,13 @@ export default function ImageComparison({ loading }: ImageComparisonProps) {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* DALL-E 2 Image Card */}
+              {/* Left Image (DALL·E 2) */}
               <div className="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden">
-                <div className="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
-                  <h4 className="font-bold text-gray-800 text-lg">DALL·E 2</h4>
-                  <span className="text-xs px-3 py-1 bg-gray-200 rounded-full text-gray-800 font-semibold">Legacy Model</span>
-                </div>
-                
                 <div className="p-5">
                   <div className="image-card relative overflow-hidden rounded-lg aspect-square border border-gray-200 shadow-sm">
                     <img 
                       src={pair.dalle2ImageUrl}
-                      alt={`DALL·E 2 generated image for: ${pair.prompt}`}
+                      alt={`AI generated image A for: ${pair.prompt}`}
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -100,24 +95,19 @@ export default function ImageComparison({ loading }: ImageComparisonProps) {
                         Vote Recorded
                       </>
                     ) : (
-                      "Vote for DALL·E 2"
+                      "Vote for Image A"
                     )}
                   </Button>
                 </div>
               </div>
               
-              {/* DALL-E 3 Image Card */}
+              {/* Right Image (DALL·E 3) */}
               <div className="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden">
-                <div className="p-4 border-b border-gray-200 flex justify-between items-center bg-green-50">
-                  <h4 className="font-bold text-gray-800 text-lg">DALL·E 3</h4>
-                  <span className="text-xs px-3 py-1 bg-green-100 rounded-full text-green-800 font-semibold">Latest Model</span>
-                </div>
-                
                 <div className="p-5">
                   <div className="image-card relative overflow-hidden rounded-lg aspect-square border border-gray-200 shadow-sm">
                     <img 
                       src={pair.dalle3ImageUrl}
-                      alt={`DALL·E 3 generated image for: ${pair.prompt}`}
+                      alt={`AI generated image B for: ${pair.prompt}`}
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -139,7 +129,7 @@ export default function ImageComparison({ loading }: ImageComparisonProps) {
                         Vote Recorded
                       </>
                     ) : (
-                      "Vote for DALL·E 3"
+                      "Vote for Image B"
                     )}
                   </Button>
                 </div>
