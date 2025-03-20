@@ -60,22 +60,22 @@ export default function ImageComparison({ loading }: ImageComparisonProps) {
       {imagePairs?.map((pair) => (
         <div key={pair.id} className="mb-12">
           <div className="max-w-5xl mx-auto">
-            <div className="p-4 mb-4 bg-gray-100 rounded-lg">
-              <h3 className="text-lg font-medium">
-                Prompt: <span className="text-gray-700 font-normal">{pair.prompt}</span>
+            <div className="p-5 mb-6 bg-gray-100 rounded-lg border border-gray-200 shadow-sm">
+              <h3 className="text-lg font-semibold text-gray-800">
+                Prompt: <span className="text-gray-700 font-medium">{pair.prompt}</span>
               </h3>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* DALL-E 2 Image Card */}
-              <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
-                <div className="p-4 border-b border-gray-100 flex justify-between items-center">
-                  <h4 className="font-medium text-black text-lg">DALL·E 2</h4>
-                  <span className="text-xs px-2 py-1 bg-gray-200 rounded-full text-gray-700 font-medium">Legacy Model</span>
+              <div className="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden">
+                <div className="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+                  <h4 className="font-bold text-gray-800 text-lg">DALL·E 2</h4>
+                  <span className="text-xs px-3 py-1 bg-gray-200 rounded-full text-gray-800 font-semibold">Legacy Model</span>
                 </div>
                 
-                <div className="p-4">
-                  <div className="image-card relative overflow-hidden rounded-lg aspect-square">
+                <div className="p-5">
+                  <div className="image-card relative overflow-hidden rounded-lg aspect-square border border-gray-200 shadow-sm">
                     <img 
                       src={pair.dalle2ImageUrl}
                       alt={`DALL·E 2 generated image for: ${pair.prompt}`}
@@ -84,18 +84,19 @@ export default function ImageComparison({ loading }: ImageComparisonProps) {
                   </div>
                 </div>
                 
-                <div className="p-4 flex justify-center">
+                <div className="px-5 pb-5 pt-2 flex justify-center">
                   <Button 
                     variant={votedPairs[pair.id] === "dalle2" ? "default" : "outline"}
+                    size="lg"
                     className={votedPairs[pair.id] === "dalle2" 
-                      ? "bg-gray-800 text-white hover:bg-gray-700" 
-                      : "border-2 border-gray-800 text-gray-800 font-medium hover:bg-gray-800 hover:text-white"}
+                      ? "bg-gray-800 text-white hover:bg-gray-700 w-full py-6 text-base" 
+                      : "border-2 border-gray-800 text-gray-800 font-medium hover:bg-gray-800 hover:text-white w-full py-6 text-base"}
                     onClick={() => handleVote(pair.id, false)}
                     disabled={!!votedPairs[pair.id]}
                   >
                     {votedPairs[pair.id] === "dalle2" ? (
                       <>
-                        <Check className="mr-2 h-4 w-4" />
+                        <Check className="mr-2 h-5 w-5" />
                         Vote Recorded
                       </>
                     ) : (
@@ -106,14 +107,14 @@ export default function ImageComparison({ loading }: ImageComparisonProps) {
               </div>
               
               {/* DALL-E 3 Image Card */}
-              <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
-                <div className="p-4 border-b border-gray-100 flex justify-between items-center">
-                  <h4 className="font-medium text-black text-lg">DALL·E 3</h4>
-                  <span className="text-xs px-2 py-1 bg-green-100 rounded-full text-green-800 font-medium">Latest Model</span>
+              <div className="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden">
+                <div className="p-4 border-b border-gray-200 flex justify-between items-center bg-green-50">
+                  <h4 className="font-bold text-gray-800 text-lg">DALL·E 3</h4>
+                  <span className="text-xs px-3 py-1 bg-green-100 rounded-full text-green-800 font-semibold">Latest Model</span>
                 </div>
                 
-                <div className="p-4">
-                  <div className="image-card relative overflow-hidden rounded-lg aspect-square">
+                <div className="p-5">
+                  <div className="image-card relative overflow-hidden rounded-lg aspect-square border border-gray-200 shadow-sm">
                     <img 
                       src={pair.dalle3ImageUrl}
                       alt={`DALL·E 3 generated image for: ${pair.prompt}`}
@@ -122,18 +123,19 @@ export default function ImageComparison({ loading }: ImageComparisonProps) {
                   </div>
                 </div>
                 
-                <div className="p-4 flex justify-center">
+                <div className="px-5 pb-5 pt-2 flex justify-center">
                   <Button 
                     variant={votedPairs[pair.id] === "dalle3" ? "default" : "outline"}
+                    size="lg"
                     className={votedPairs[pair.id] === "dalle3" 
-                      ? "bg-primary text-white hover:bg-primary/90" 
-                      : "border-2 border-primary text-primary font-medium hover:bg-primary hover:text-white"}
+                      ? "bg-primary text-white hover:bg-primary/90 w-full py-6 text-base" 
+                      : "border-2 border-primary text-primary font-medium hover:bg-primary hover:text-white w-full py-6 text-base"}
                     onClick={() => handleVote(pair.id, true)}
                     disabled={!!votedPairs[pair.id]}
                   >
                     {votedPairs[pair.id] === "dalle3" ? (
                       <>
-                        <Check className="mr-2 h-4 w-4" />
+                        <Check className="mr-2 h-5 w-5" />
                         Vote Recorded
                       </>
                     ) : (
