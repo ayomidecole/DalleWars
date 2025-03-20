@@ -81,10 +81,10 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
                 <Button 
                   type="submit" 
                   disabled={generateMutation.isPending}
-                  className="bg-primary hover:bg-primary/90 text-white font-semibold text-sm px-3 py-0.5 h-auto shadow-sm"
+                  className="bg-primary hover:bg-primary/90 text-white font-semibold text-sm px-4 py-2 h-auto shadow-sm"
                   size="default"
                 >
-                  <Paintbrush className="mr-1 h-4 w-4" />
+                  <Paintbrush className="mr-1.5 h-4 w-4" />
                   {generateMutation.isPending ? "Generating..." : "Generate Images"}
                 </Button>
               </div>
