@@ -8,7 +8,7 @@ import {
 import { neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
 import dotenv from 'dotenv';
-import { eq, desc } from 'drizzle-orm';
+import { eq, desc, sql } from 'drizzle-orm';
 
 // Load environment variables
 dotenv.config();
@@ -22,6 +22,7 @@ export interface IStorage {
   // Votes
   getVotes(): Promise<Vote[]>;
   getVotesByImagePairId(imagePairId: number): Promise<Vote[]>;
+  hasVotedForImagePair(imagePairId: number): Promise<boolean>;
   createVote(vote: InsertVote): Promise<Vote>;
   
   // Scores
@@ -70,6 +71,11 @@ export class MemStorage implements IStorage {
   async getVotesByImagePairId(imagePairId: number): Promise<Vote[]> {
     return Array.from(this.votes.values())
       .filter(vote => vote.imagePairId === imagePairId);
+  }
+  
+  async hasVotedForImagePair(imagePairId: number): Promise<boolean> {
+    const votes = await this.getVotesByImagePairId(imagePairId);
+    return votes.length > 0;
   }
 
   async createVote(insertVote: InsertVote): Promise<Vote> {
@@ -159,6 +165,19 @@ export class PostgresStorage implements IStorage {
     } catch (error) {
       console.error(`Error fetching votes for image pair ${imagePairId}:`, error);
       return [];
+    }
+  }
+  
+  async hasVotedForImagePair(imagePairId: number): Promise<boolean> {
+    try {
+      const voteCount = await this.db.select({ count: sql`count(*)` })
+        .from(votes)
+        .where(eq(votes.imagePairId, imagePairId));
+      
+      return parseInt(voteCount[0].count as string, 10) > 0;
+    } catch (error) {
+      console.error(`Error checking if voted for image pair ${imagePairId}:`, error);
+      return false;
     }
   }
 

@@ -126,6 +126,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!imagePair) {
         return res.status(404).json({ message: "Image pair not found" });
       }
+      
+      // Check if already voted for this image pair
+      const hasVoted = await storage.hasVotedForImagePair(parsedVote.imagePairId);
+      if (hasVoted) {
+        return res.status(400).json({ message: "You've already voted for this image pair" });
+      }
 
       // Create vote
       const vote = await storage.createVote(parsedVote);
