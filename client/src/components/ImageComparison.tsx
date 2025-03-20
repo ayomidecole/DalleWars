@@ -60,9 +60,9 @@ export default function ImageComparison({ loading }: ImageComparisonProps) {
       {imagePairs?.map((pair) => (
         <div key={pair.id} className="mb-12">
           <div className="max-w-5xl mx-auto">
-            <div className="p-4 mb-4 bg-gray-50 rounded-lg">
+            <div className="p-4 mb-4 bg-gray-100 rounded-lg">
               <h3 className="text-lg font-medium">
-                Prompt: <span className="text-accent font-normal">{pair.prompt}</span>
+                Prompt: <span className="text-gray-700 font-normal">{pair.prompt}</span>
               </h3>
             </div>
             
@@ -70,8 +70,8 @@ export default function ImageComparison({ loading }: ImageComparisonProps) {
               {/* DALL-E 2 Image Card */}
               <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
                 <div className="p-4 border-b border-gray-100 flex justify-between items-center">
-                  <h4 className="font-medium text-secondary">DALL·E 2</h4>
-                  <span className="text-xs px-2 py-1 bg-gray-100 rounded-full text-accent">Legacy Model</span>
+                  <h4 className="font-medium text-black text-lg">DALL·E 2</h4>
+                  <span className="text-xs px-2 py-1 bg-gray-200 rounded-full text-gray-700 font-medium">Legacy Model</span>
                 </div>
                 
                 <div className="p-4">
@@ -88,8 +88,8 @@ export default function ImageComparison({ loading }: ImageComparisonProps) {
                   <Button 
                     variant={votedPairs[pair.id] === "dalle2" ? "default" : "outline"}
                     className={votedPairs[pair.id] === "dalle2" 
-                      ? "bg-secondary hover:bg-secondary/90" 
-                      : "border-2 border-secondary text-secondary hover:bg-secondary hover:text-white"}
+                      ? "bg-gray-800 text-white hover:bg-gray-700" 
+                      : "border-2 border-gray-800 text-gray-800 font-medium hover:bg-gray-800 hover:text-white"}
                     onClick={() => handleVote(pair.id, false)}
                     disabled={!!votedPairs[pair.id]}
                   >
@@ -108,8 +108,8 @@ export default function ImageComparison({ loading }: ImageComparisonProps) {
               {/* DALL-E 3 Image Card */}
               <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
                 <div className="p-4 border-b border-gray-100 flex justify-between items-center">
-                  <h4 className="font-medium text-primary">DALL·E 3</h4>
-                  <span className="text-xs px-2 py-1 bg-green-50 text-primary rounded-full">Latest Model</span>
+                  <h4 className="font-medium text-black text-lg">DALL·E 3</h4>
+                  <span className="text-xs px-2 py-1 bg-green-100 rounded-full text-green-800 font-medium">Latest Model</span>
                 </div>
                 
                 <div className="p-4">
@@ -126,8 +126,8 @@ export default function ImageComparison({ loading }: ImageComparisonProps) {
                   <Button 
                     variant={votedPairs[pair.id] === "dalle3" ? "default" : "outline"}
                     className={votedPairs[pair.id] === "dalle3" 
-                      ? "bg-primary hover:bg-primary/90" 
-                      : "border-2 border-primary text-primary hover:bg-primary hover:text-white"}
+                      ? "bg-primary text-white hover:bg-primary/90" 
+                      : "border-2 border-primary text-primary font-medium hover:bg-primary hover:text-white"}
                     onClick={() => handleVote(pair.id, true)}
                     disabled={!!votedPairs[pair.id]}
                   >
