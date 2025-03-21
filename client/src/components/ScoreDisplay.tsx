@@ -18,7 +18,7 @@ export default function ScoreDisplay() {
   return (
     <section className="my-8">
       <div className="max-w-4xl mx-auto">
-        <Card className="bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-sm dark:shadow-none dark:card-glow transition-all duration-200">
+        <Card className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-sm dark:shadow-none dark:card-glow transition-all duration-200">
           <CardContent className="py-5">
             <h3 className="text-xl font-medium mb-4 text-gray-800 dark:text-gray-200 dark:heading-glow transition-colors">Current Score</h3>
             
@@ -34,13 +34,13 @@ export default function ScoreDisplay() {
               </div>
             </div>
             
-            <div className="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-3 mt-6 transition-colors">
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mt-6 transition-colors">
               <div 
-                className="bg-gray-700 dark:bg-gray-500 h-3 rounded-full transition-colors dark:shadow-[0_0_5px_rgba(255,255,255,0.15)] dark:hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] transition-all duration-200" 
+                className="bg-gray-600 dark:bg-gray-500 h-3 rounded-full transition-colors shadow-[0_0_2px_rgba(0,0,0,0.05)] hover:shadow-[0_0_4px_rgba(0,0,0,0.1)] dark:shadow-[0_0_5px_rgba(255,255,255,0.15)] dark:hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] transition-all duration-200" 
                 style={{ width: `${dalle2Percentage}%` }}
               ></div>
               <div 
-                className="bg-primary dark:bg-primary/90 h-3 rounded-full ml-auto -mt-3 transition-colors dark:shadow-[0_0_8px_rgba(16,163,127,0.3)] dark:hover:shadow-[0_0_12px_rgba(16,163,127,0.5)] transition-all duration-200" 
+                className="bg-primary/90 dark:bg-primary/90 h-3 rounded-full ml-auto -mt-3 transition-colors shadow-[0_0_3px_rgba(16,163,127,0.15)] hover:shadow-[0_0_5px_rgba(16,163,127,0.25)] dark:shadow-[0_0_8px_rgba(16,163,127,0.3)] dark:hover:shadow-[0_0_12px_rgba(16,163,127,0.5)] transition-all duration-200" 
                 style={{ width: `${dalle3Percentage}%` }}
               ></div>
             </div>
