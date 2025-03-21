@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
-import { Paintbrush } from "lucide-react";
+import { Lightbulb, Paintbrush, Sparkles } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { generateImages } from "@/lib/openai";
 import { queryClient } from "@/lib/queryClient";
@@ -58,36 +58,46 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
   };
   
   return (
-    <section className="mb-12">
+    <section className="mb-12 relative z-10">
       <div className="max-w-3xl mx-auto">
-        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Generate Comparison Images</h2>
+        <h2 className="text-2xl font-semibold mb-6 neon-text flex items-center gap-2">
+          <Lightbulb className="w-5 h-5" />
+          Imagine & Create
+          <Sparkles className="w-4 h-4 text-primary/80 animate-pulse" />
+        </h2>
         
-        <Card className="shadow-md border-gray-200">
-          <CardContent className="pt-6 py-8">
+        <Card className="neon-card relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-purple-500/5"></div>
+          <CardContent className="pt-6 py-8 relative z-10">
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label htmlFor="prompt" className="block text-gray-800 font-semibold mb-3 text-lg">
-                  Your prompt
+                <label htmlFor="prompt" className="block font-medium mb-3 text-lg">
+                  Your creative prompt
                 </label>
-                <Textarea 
-                  id="prompt" 
-                  rows={4} 
-                  placeholder="A futuristic city with flying cars and neon lights"
-                  value={prompt}
-                  onChange={(e) => setPrompt(e.target.value)}
-                  className="resize-none text-base px-4 py-3 border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary"
-                />
+                <div className="relative">
+                  <Textarea 
+                    id="prompt" 
+                    rows={4} 
+                    placeholder="A futuristic city with flying cars and neon lights..."
+                    value={prompt}
+                    onChange={(e) => setPrompt(e.target.value)}
+                    className="neon-input resize-none text-base px-4 py-3 bg-background/60"
+                  />
+                  <div className="absolute inset-0 pointer-events-none border border-primary/10 rounded-md opacity-50"></div>
+                </div>
               </div>
               
               <div className="flex justify-end pt-2">
                 <Button 
                   type="submit" 
                   disabled={generateMutation.isPending}
-                  className="bg-primary hover:bg-primary/90 text-white font-semibold text-sm px-4 py-2 h-auto shadow-sm"
-                  size="default"
+                  className="neon-button group relative overflow-hidden"
                 >
-                  <Paintbrush className="mr-1.5 h-4 w-4" />
-                  {generateMutation.isPending ? "Generating..." : "Generate Images"}
+                  <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-primary/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                  <Paintbrush className="mr-1.5 h-4 w-4 group-hover:animate-pulse" />
+                  <span className="relative z-10">
+                    {generateMutation.isPending ? "Generating..." : "Generate Images"}
+                  </span>
                 </Button>
               </div>
             </form>
