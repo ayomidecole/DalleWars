@@ -11,10 +11,10 @@
   }
 
   .dark {
-    --neon-glow: 0 0 15px rgba(16, 163, 127, 0.4);
-    --primary-glow: 0 0 20px rgba(16, 163, 127, 0.3);
-    --score-glow: 0 0 25px rgba(16, 163, 127, 0.25);
-    --score-hover-glow: 0 0 35px rgba(16, 163, 127, 0.45);
+    --neon-glow: 0 0 18px rgba(16, 163, 127, 0.5);
+    --primary-glow: 0 0 22px rgba(16, 163, 127, 0.4);
+    --score-glow: 0 0 28px rgba(16, 163, 127, 0.35);
+    --score-hover-glow: 0 0 38px rgba(16, 163, 127, 0.55);
   }
 
   * {
@@ -27,11 +27,11 @@
   }
 
   .dark .neon-text {
-    text-shadow: 0 0 5px rgba(16, 163, 127, 0.7);
+    text-shadow: 0 0 7px rgba(16, 163, 127, 0.8);
   }
 
   .dark .neon-border {
-    box-shadow: 0 0 5px rgba(16, 163, 127, 0.3);
+    box-shadow: 0 0 8px rgba(16, 163, 127, 0.4);
   }
 
   .dark .image-card {
@@ -44,22 +44,22 @@
 
   /* Glow for dark mode cards */
   .dark .card-glow {
-    box-shadow: 0 0 15px rgba(16, 163, 127, 0.15);
+    box-shadow: 0 0 18px rgba(16, 163, 127, 0.22);
     transition: box-shadow 0.3s ease;
   }
   
   .dark .card-glow:hover {
-    box-shadow: 0 0 25px rgba(16, 163, 127, 0.25);
+    box-shadow: 0 0 30px rgba(16, 163, 127, 0.35);
   }
 
   /* Text glow for dark mode headings */
   .dark .heading-glow {
-    text-shadow: 0 0 5px rgba(16, 163, 127, 0.2);
+    text-shadow: 0 0 6px rgba(16, 163, 127, 0.3);
     transition: text-shadow 0.3s ease;
   }
   
   .dark .heading-glow:hover {
-    text-shadow: 0 0 8px rgba(16, 163, 127, 0.35);
+    text-shadow: 0 0 10px rgba(16, 163, 127, 0.45);
   }
   
   /* Custom text shadow utilities for dark mode */
@@ -68,17 +68,18 @@
       filter: brightness(1);
     }
     50% {
-      filter: brightness(1.1);
+      filter: brightness(1.2);
     }
   }
   
   .dark .text-shadow-glow {
     text-shadow: var(--score-glow);
+    transition: all 0.4s ease;
   }
   
   .dark .text-shadow-glow:hover {
     text-shadow: var(--score-hover-glow);
-    animation: softPulse 4s infinite;
+    animation: softPulse 3.5s infinite;
   }
   
   /* Score styles for dark mode */
@@ -87,7 +88,8 @@
   }
   
   .dark .score-animate:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.15);
+    transform: translateY(-3px);
+    filter: brightness(1.2);
+    letter-spacing: 0.03em;
   }
 }

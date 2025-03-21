@@ -24,13 +24,13 @@ export default function ScoreDisplay() {
             
             <div className="grid grid-cols-2 gap-6">
               <div className="text-center group cursor-pointer">
-                <div className="text-4xl font-semibold text-gray-800 dark:text-gray-300 score-animate dark:group-hover:text-gray-100 dark:text-shadow-glow transition-all duration-300">{dalle2}</div>
-                <div className="text-gray-700 dark:text-gray-400 text-sm font-medium mt-1 transition-colors">DALL·E 2</div>
+                <div className="text-4xl font-bold text-gray-800 dark:text-gray-300 score-animate dark:group-hover:text-gray-100 dark:text-shadow-glow transition-all duration-300">{dalle2}</div>
+                <div className="text-gray-700 dark:text-gray-400 text-sm font-medium mt-1 transition-colors dark:group-hover:text-gray-300">DALL·E 2</div>
               </div>
               
               <div className="text-center group cursor-pointer">
-                <div className="text-4xl font-semibold text-primary dark:text-primary/90 score-animate dark:group-hover:text-primary dark:text-shadow-glow transition-all duration-300">{dalle3}</div>
-                <div className="text-green-700 dark:text-green-500 text-sm font-medium mt-1 transition-colors">DALL·E 3</div>
+                <div className="text-4xl font-bold text-primary dark:text-primary/90 score-animate dark:group-hover:text-primary dark:text-shadow-glow transition-all duration-300">{dalle3}</div>
+                <div className="text-green-700 dark:text-green-500 text-sm font-medium mt-1 transition-colors dark:group-hover:text-green-400">DALL·E 3</div>
               </div>
             </div>
             
@@ -46,12 +46,12 @@ export default function ScoreDisplay() {
             </div>
             
             <div className="flex justify-between mt-1 text-xs font-medium">
-              <div className="text-gray-700 dark:text-gray-400 transition-colors">{dalle2Percentage}%</div>
-              <div className="text-primary dark:text-primary/90 transition-colors">{dalle3Percentage}%</div>
+              <div className="text-gray-700 dark:text-gray-400 transition-colors group-hover:text-gray-900 dark:group-hover:text-gray-300">{dalle2Percentage}%</div>
+              <div className="text-primary dark:text-primary/90 transition-colors group-hover:text-primary/100 dark:group-hover:text-primary">{dalle3Percentage}%</div>
             </div>
             
-            <div className="text-sm text-gray-700 dark:text-gray-400 text-center mt-4 font-medium transition-colors">
-              Based on {totalVotes} total votes
+            <div className="text-sm text-gray-700 dark:text-gray-400 text-center mt-4 font-medium transition-colors dark:neon-text group">
+              Based on <span className="dark:group-hover:text-white transition-colors">{totalVotes}</span> total votes
             </div>
           </CardContent>
         </Card>

@@ -92,7 +92,7 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
                     <Paintbrush className="mr-1.5 h-4 w-4 group-hover:animate-pulse" />
                     {generateMutation.isPending ? "Generating..." : "Generate Images"}
                   </span>
-                  <span className="absolute -inset-0.5 rounded-lg bg-gradient-to-r from-primary via-blue-400 to-purple-500 opacity-0 group-hover:opacity-70 blur-lg group-hover:blur-md transition-all duration-300 group-hover:duration-200"></span>
+                  <span className="absolute -inset-0.5 rounded-lg bg-gradient-to-r from-primary via-blue-400 to-purple-500 opacity-0 group-hover:opacity-80 blur-lg group-hover:blur-md transition-all duration-300 group-hover:duration-200 dark:group-hover:opacity-90"></span>
                 </Button>
               </div>
             </form>
