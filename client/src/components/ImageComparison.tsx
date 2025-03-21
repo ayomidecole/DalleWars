@@ -101,7 +101,7 @@ export default function ImageComparison({ loading, imagePair }: ImageComparisonP
   if (!loading && !imagePair) {
     return (
       <div className="flex justify-center my-8">
-        <Card className="w-full max-w-2xl dark:bg-gray-900 dark:border-gray-800 transition-colors duration-200 dark:card-glow">
+        <Card className="w-full max-w-2xl bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 transition-colors duration-200 dark:card-glow">
           <CardHeader>
             <CardTitle className="dark:text-gray-200 transition-colors">No Images Yet</CardTitle>
             <CardDescription className="dark:text-gray-400 transition-colors">
@@ -120,7 +120,7 @@ export default function ImageComparison({ loading, imagePair }: ImageComparisonP
     <section id="imagesComparison" className="my-8">
       <div className="mb-10">
         <div className="max-w-4xl mx-auto">
-          <div className="p-4 mb-5 bg-gray-100 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm transition-colors duration-200">
+          <div className="p-4 mb-5 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm transition-colors duration-200">
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 transition-colors">
               Prompt: <span className="text-gray-700 dark:text-gray-300 font-medium transition-colors">{pair.prompt}</span>
             </h3>
@@ -129,7 +129,7 @@ export default function ImageComparison({ loading, imagePair }: ImageComparisonP
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* DALL-E 2 Image Card */}
             <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-md dark:shadow-none overflow-hidden transition-all duration-200">
-              <div className="p-4 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center bg-gray-50 dark:bg-gray-800/50 transition-colors">
+              <div className="p-4 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center bg-white dark:bg-gray-800/50 transition-colors">
                 <h4 className="font-bold text-gray-800 dark:text-gray-200 text-lg transition-colors">DALL·E 2</h4>
                 <span className="text-xs px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-800 dark:text-gray-300 font-semibold transition-colors">Legacy Model</span>
               </div>
@@ -168,7 +168,7 @@ export default function ImageComparison({ loading, imagePair }: ImageComparisonP
             
             {/* DALL-E 3 Image Card */}
             <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-md dark:shadow-none overflow-hidden transition-all duration-200">
-              <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-green-50 dark:bg-green-950/30 transition-colors">
+              <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-white dark:bg-green-950/30 transition-colors">
                 <h4 className="font-bold text-gray-800 dark:text-gray-200 text-lg transition-colors">DALL·E 3</h4>
                 <span className="text-xs px-3 py-1 bg-green-100 dark:bg-green-900/50 rounded-full text-green-800 dark:text-green-400 font-semibold transition-colors">Latest Model</span>
               </div>

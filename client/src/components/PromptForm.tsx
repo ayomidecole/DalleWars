@@ -62,7 +62,7 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
       <div className="max-w-3xl mx-auto">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800 dark:text-gray-200 dark:heading-glow transition-colors">Generate Comparison Images</h2>
         
-        <Card className="shadow-md border-gray-200 dark:border-gray-800 dark:bg-gray-900 dark:card-glow transition-all duration-200">
+        <Card className="shadow-md bg-white border-gray-200 dark:border-gray-800 dark:bg-gray-900 dark:card-glow transition-all duration-200">
           <CardContent className="pt-6 py-8">
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
