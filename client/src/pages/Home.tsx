@@ -23,7 +23,7 @@ export default function Home() {
   };
   
   return (
-    <div className="min-h-screen flex flex-col bg-background text-text">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
       <Header />
       
       <main className="flex-grow container mx-auto px-4 py-6">

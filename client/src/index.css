@@ -22,8 +22,8 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground transition-colors duration-200 
-    bg-white dark:bg-gray-950;
+    @apply font-sans antialiased transition-colors duration-200 
+    bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100;
   }
 
   .dark .neon-text {
