@@ -83,11 +83,16 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
                 <Button 
                   type="submit" 
                   disabled={generateMutation.isPending}
-                  className="bg-primary hover:bg-primary/90 text-white font-semibold text-sm px-4 py-2 h-auto shadow-sm"
+                  className="relative overflow-hidden bg-primary text-white font-semibold text-sm px-5 py-2.5 h-auto shadow-md transition-all duration-300 group"
                   size="default"
                 >
-                  <Paintbrush className="mr-1.5 h-4 w-4" />
-                  {generateMutation.isPending ? "Generating..." : "Generate Images"}
+                  <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-400 via-primary to-purple-500 opacity-0 group-hover:opacity-40 blur transition-opacity duration-300"></span>
+                  <span className="absolute inset-0 w-full h-full bg-primary opacity-0 group-hover:opacity-0 transition-opacity duration-300"></span>
+                  <span className="relative flex items-center justify-center z-10">
+                    <Paintbrush className="mr-1.5 h-4 w-4 group-hover:animate-pulse" />
+                    {generateMutation.isPending ? "Generating..." : "Generate Images"}
+                  </span>
+                  <span className="absolute -inset-0.5 rounded-lg bg-gradient-to-r from-primary via-blue-400 to-purple-500 opacity-0 group-hover:opacity-70 blur-lg group-hover:blur-md transition-all duration-300 group-hover:duration-200"></span>
                 </Button>
               </div>
             </form>
