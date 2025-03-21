@@ -103,8 +103,8 @@ export default function ImageComparison({ loading, imagePair }: ImageComparisonP
       <div className="flex justify-center my-8">
         <Card className="w-full max-w-2xl bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 transition-colors duration-200 dark:card-glow">
           <CardHeader>
-            <CardTitle className="dark:text-gray-200 transition-colors">No Images Yet</CardTitle>
-            <CardDescription className="dark:text-gray-400 transition-colors">
+            <CardTitle className="text-gray-800 dark:text-gray-200 transition-colors">No Images Yet</CardTitle>
+            <CardDescription className="text-gray-600 dark:text-gray-400 transition-colors">
               Enter a prompt above to generate image comparisons from DALL-E 2 and DALL-E 3.
             </CardDescription>
           </CardHeader>
