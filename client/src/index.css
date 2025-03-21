@@ -66,9 +66,20 @@
   @keyframes softPulse {
     0%, 100% {
       filter: brightness(1);
+      text-shadow: inherit;
     }
     50% {
       filter: brightness(1.2);
+      text-shadow: 0 0 15px rgba(16, 163, 127, 0.6);
+    }
+  }
+  
+  @keyframes softGlow {
+    0%, 100% {
+      text-shadow: 0 0 6px rgba(16, 163, 127, 0.3);
+    }
+    50% {
+      text-shadow: 0 0 12px rgba(16, 163, 127, 0.6);
     }
   }
   
