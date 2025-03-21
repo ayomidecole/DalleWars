@@ -53,25 +53,25 @@ export default function LoadingState() {
   return (
     <div className="mb-12 py-16 flex flex-col items-center justify-center">
       <div className="relative mb-8">
-        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 via-primary to-purple-500 opacity-20 blur-xl animate-pulse"></div>
-        <div className="relative bg-white dark:bg-gray-900 rounded-full p-6 shadow-xl border border-gray-100 dark:border-gray-800">
+        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 via-primary to-purple-500 opacity-20 dark:opacity-30 blur-xl animate-pulse"></div>
+        <div className="relative bg-white dark:bg-gray-900 rounded-full p-6 shadow-xl border border-gray-100 dark:border-gray-800 dark:shadow-[0_0_15px_rgba(16,163,127,0.2)] transition-all duration-200">
           {icons[animationStep]}
         </div>
       </div>
       
       <div className="space-y-2 text-center">
-        <p className="text-lg font-medium text-gray-800 dark:text-gray-200">
+        <p className="text-lg font-medium text-gray-800 dark:text-gray-200 transition-colors duration-200 dark:neon-text">
           {message}<span className="inline-block w-8 text-left">{dots}</span>
         </p>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-200">
           Creating both DALL·E 2 and DALL·E 3 versions
         </p>
       </div>
       
       <div className="mt-8 flex justify-center space-x-3">
-        <div className="h-2 w-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: "0ms" }}></div>
-        <div className="h-2 w-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: "150ms" }}></div>
-        <div className="h-2 w-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: "300ms" }}></div>
+        <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-bounce" style={{ animationDelay: "0ms" }}></div>
+        <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-bounce" style={{ animationDelay: "150ms" }}></div>
+        <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-bounce" style={{ animationDelay: "300ms" }}></div>
       </div>
     </div>
   );

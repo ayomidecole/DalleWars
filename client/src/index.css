@@ -3,11 +3,48 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --neon-glow: 0 0 10px rgba(16, 163, 127, 0.3);
+    --primary-glow: 0 0 15px rgba(16, 163, 127, 0.2);
+  }
+
+  .dark {
+    --neon-glow: 0 0 15px rgba(16, 163, 127, 0.4);
+    --primary-glow: 0 0 20px rgba(16, 163, 127, 0.3);
+  }
+
   * {
     @apply border-border;
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased bg-background text-foreground transition-colors duration-200 
+    bg-white dark:bg-gray-950;
+  }
+
+  .dark .neon-text {
+    text-shadow: 0 0 5px rgba(16, 163, 127, 0.7);
+  }
+
+  .dark .neon-border {
+    box-shadow: 0 0 5px rgba(16, 163, 127, 0.3);
+  }
+
+  .dark .image-card {
+    box-shadow: var(--neon-glow);
+  }
+
+  .dark .btn-primary {
+    box-shadow: var(--primary-glow);
+  }
+
+  /* Subtle glow for dark mode cards */
+  .dark .card-glow {
+    box-shadow: 0 0 15px rgba(16, 163, 127, 0.15);
+  }
+
+  /* Subtle text glow for dark mode headings */
+  .dark .heading-glow {
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.1);
   }
 }
