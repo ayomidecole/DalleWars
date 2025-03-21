@@ -75,7 +75,7 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
                   placeholder="A futuristic city with flying cars and neon lights"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
-                  className="resize-none text-base px-4 py-3 border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 focus:border-primary focus:ring-2 focus:ring-primary transition-colors"
+                  className="resize-none text-base px-4 py-3 bg-white text-gray-800 border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 focus:border-primary focus:ring-2 focus:ring-primary transition-colors"
                 />
               </div>
               
