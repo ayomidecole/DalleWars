@@ -89,14 +89,7 @@ export default function SettingsModal() {
           </div>
         </div>
         
-        <div className="flex justify-end">
-          <Button 
-            variant="outline"
-            onClick={() => setOpen(false)}
-          >
-            Close
-          </Button>
-        </div>
+        
       </DialogContent>
     </Dialog>
   );
