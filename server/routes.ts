@@ -188,6 +188,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
       status: hasApiKey ? "active" : "missing-api-key"
     });
   });
+  
+  // Generate dad jokes
+  app.get("/api/dad-jokes", async (req: Request, res: Response) => {
+    try {
+      if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY.trim() === "") {
+        return res.status(500).json({ message: "OpenAI API key not configured" });
+      }
+      
+      const count = req.query.count ? parseInt(req.query.count as string) : 3;
+      
+      const response = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content: "You are a dad joke generator. Generate short, family-friendly dad jokes. Each joke should be in title case."
+          },
+          {
+            role: "user",
+            content: `Generate ${count} dad jokes. Each joke should be on a new line. Keep them short and funny. The response should only contain the jokes, nothing else.`
+          }
+        ],
+        temperature: 0.7,
+        max_tokens: 150
+      });
+      
+      const jokes = response.choices[0]?.message.content?.split('\n').filter(joke => joke.trim() !== '') || [];
+      
+      res.json({ jokes });
+    } catch (error) {
+      console.error("Error generating dad jokes:", error);
+      
+      if (error instanceof Error) {
+        if (error instanceof OpenAI.APIError) {
+          return res.status(error.status || 500).json({
+            message: "OpenAI API error",
+            error: error.message
+          });
+        }
+        
+        return res.status(500).json({ message: "Failed to generate jokes", error: error.message });
+      }
+      
+      res.status(500).json({ message: "Failed to generate jokes" });
+    }
+  });
 
   const httpServer = createServer(app);
   return httpServer;

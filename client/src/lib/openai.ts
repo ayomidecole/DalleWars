@@ -35,3 +35,16 @@ export async function checkApiStatus() {
     throw error;
   }
 }
+
+// Function to fetch dad jokes
+export async function getDadJokes(count: number = 3) {
+  try {
+    const response = await apiRequest("GET", `/api/dad-jokes?count=${count}`);
+    const data = await response.json();
+    return data.jokes || [];
+  } catch (error) {
+    console.error("Error fetching dad jokes:", error);
+    // Return empty array on error instead of throwing
+    return [];
+  }
+}

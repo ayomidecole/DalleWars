@@ -1,10 +1,22 @@
 import { useState, useEffect } from "react";
 import { Palette, Sparkles, Wand2 } from "lucide-react";
+import { getDadJokes } from "@/lib/openai";
 
 export default function LoadingState() {
   const [dotCount, setDotCount] = useState(1);
   const [message, setMessage] = useState("Contacting AI");
   const [animationStep, setAnimationStep] = useState(0);
+  const [jokeIndex, setJokeIndex] = useState(0);
+  const [jokes, setJokes] = useState<string[]>([
+    "What's Forrest Gump's Password? 1Forrest1",
+    "What Is A Fancy Fish Called? So-Fish-Ti-Cated",
+    "I Just Watched A Documentary About Beavers. It Was The Best Dam Show Ever!",
+    "Why Don't Scientists Trust Atoms? Because They Make Up Everything!",
+    "Why Did The Scarecrow Win An Award? Because He Was Outstanding In His Field!",
+    "What Do You Call A Fake Noodle? An Impasta!",
+    "How Does A Penguin Build Its House? Igloos It Together!",
+    "Did You Hear About The Mathematician Who's Afraid Of Negative Numbers? He'll Stop At Nothing To Avoid Them!"
+  ]);
   
   const messages = [
     "Contacting AI",
@@ -19,6 +31,28 @@ export default function LoadingState() {
     <Sparkles key="sparkles" className="h-7 w-7 text-amber-500 animate-pulse" />,
     <Palette key="palette" className="h-7 w-7 text-violet-500 animate-ping opacity-75" />
   ];
+  
+  // Fetch some fresh jokes when component mounts
+  useEffect(() => {
+    const fetchJokes = async () => {
+      try {
+        const freshJokes = await getDadJokes(5);
+        if (freshJokes && freshJokes.length > 0) {
+          // Combine with existing jokes (prefer fresh ones first)
+          setJokes(prevJokes => {
+            const combined = [...freshJokes, ...prevJokes];
+            // Remove duplicates and keep the list at a reasonable size
+            return Array.from(new Set(combined)).slice(0, 10);
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching jokes:", error);
+        // Keep existing jokes if fetch fails
+      }
+    };
+    
+    fetchJokes();
+  }, []);
   
   useEffect(() => {
     // Animate dots for loading ellipsis
@@ -39,14 +73,20 @@ export default function LoadingState() {
       setAnimationStep((prev) => (prev + 1) % icons.length);
     }, 2000);
     
+    // Rotate dad jokes
+    const jokeInterval = setInterval(() => {
+      setJokeIndex((prev) => (prev + 1) % jokes.length);
+    }, 5000);
+    
     return () => {
       clearInterval(dotInterval);
       clearInterval(messageInterval);
       clearInterval(animationInterval);
+      clearInterval(jokeInterval);
     };
   // Icons and messages are static arrays, so we don't need to include them in dependencies
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [jokes]); // Added jokes as dependency since it can change
   
   const dots = '.'.repeat(dotCount);
   
@@ -68,7 +108,13 @@ export default function LoadingState() {
         </p>
       </div>
       
-      <div className="mt-8 flex justify-center space-x-3">
+      <div className="mt-6 max-w-md text-center px-4">
+        <p className="text-sm italic text-gray-600 dark:text-gray-300 transition-colors duration-200 dark:text-shadow-glow">
+          "{jokes[jokeIndex] || "Loading jokes..."}"
+        </p>
+      </div>
+      
+      <div className="mt-6 flex justify-center space-x-3">
         <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-bounce" style={{ animationDelay: "0ms" }}></div>
         <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-bounce" style={{ animationDelay: "150ms" }}></div>
         <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-bounce" style={{ animationDelay: "300ms" }}></div>
