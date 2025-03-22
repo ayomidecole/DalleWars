@@ -99,19 +99,18 @@ export default function LoadingState() {
         </div>
       </div>
       
-      <div className="space-y-2 text-center">
+      <div className="space-y-3 text-center">
         <p className="text-lg font-medium text-gray-800 dark:text-gray-200 transition-colors duration-200 dark:neon-text">
           {message}<span className="inline-block w-8 text-left">{dots}</span>
         </p>
-        <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-200">
-          Creating both DALL·E 2 and DALL·E 3 versions
-        </p>
-      </div>
-      
-      <div className="mt-6 max-w-md text-center px-4">
-        <p className="text-sm italic text-gray-600 dark:text-gray-300 transition-colors duration-200 dark:text-shadow-glow">
-          "{jokes[jokeIndex] || "Loading jokes..."}"
-        </p>
+        <div className="space-y-2">
+          <p className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-200">
+            Creating both DALL·E 2 and DALL·E 3 versions
+          </p>
+          <p className="text-sm italic text-gray-600 dark:text-gray-300 transition-colors duration-200 dark:text-shadow-glow">
+            "{jokes[jokeIndex] || "Loading jokes..."}"
+          </p>
+        </div>
       </div>
       
       <div className="mt-6 flex justify-center space-x-3">
