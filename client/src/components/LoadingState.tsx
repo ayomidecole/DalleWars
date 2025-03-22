@@ -100,14 +100,11 @@ export default function LoadingState() {
       </div>
       
       <div className="space-y-4 text-center">
-        <p className="text-lg font-medium text-gray-800 dark:text-gray-200 transition-colors duration-200 dark:neon-text">
-          {message}<span className="inline-block w-8 text-left">{dots}</span>
+        <p className="text-lg font-medium text-gray-800 dark:text-gray-200 transition-colors duration-200 dark:neon-text italic">
+          "{jokes[jokeIndex] || "Loading jokes..."}"
         </p>
         <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-200">
           Creating both DALL·E 2 and DALL·E 3 versions
-        </p>
-        <p className="text-sm italic text-gray-600 dark:text-gray-300 transition-colors duration-200 dark:text-shadow-glow">
-          "{jokes[jokeIndex] || "Loading jokes..."}"
         </p>
       </div>
       
