@@ -240,6 +240,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Speech to text conversion using Whisper API
   app.post("/api/speech-to-text", async (req: Request, res: Response) => {
+    let tempFile = '';
+    
     try {
       if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY.trim() === "") {
         return res.status(500).json({ message: "OpenAI API key not configured" });
@@ -249,42 +251,79 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "No audio data provided" });
       }
       
-      // The audio data should be a base64 encoded string in the format: data:audio/webm;base64,...
-      const base64Audio = req.body.audio.split(',')[1];
+      // Parse the data URI
+      const dataUriRegex = /^data:([^;]+);base64,(.+)$/;
+      const matches = req.body.audio.match(dataUriRegex);
       
-      if (!base64Audio) {
+      if (!matches || matches.length !== 3) {
         return res.status(400).json({ message: "Invalid audio data format" });
       }
+      
+      const mimeType = matches[1];
+      const base64Audio = matches[2];
+      
+      if (!base64Audio) {
+        return res.status(400).json({ message: "Invalid audio data content" });
+      }
+      
+      console.log(`Processing audio with MIME type: ${mimeType}`);
       
       // Convert base64 to buffer
       const audioBuffer = Buffer.from(base64Audio, 'base64');
       
-      // Create a temporary file
-      const tempFile = path.join(os.tmpdir(), `${Date.now()}.webm`);
+      if (audioBuffer.length === 0) {
+        return res.status(400).json({ message: "Empty audio buffer" });
+      }
+      
+      console.log(`Audio buffer size: ${audioBuffer.length} bytes`);
+      
+      // Determine file extension based on MIME type
+      let fileExtension = 'mp3'; // Default
+      
+      if (mimeType.includes('webm')) {
+        fileExtension = 'webm';
+      } else if (mimeType.includes('mp4')) {
+        fileExtension = 'mp4';
+      } else if (mimeType.includes('ogg')) {
+        fileExtension = 'ogg';
+      } else if (mimeType.includes('wav')) {
+        fileExtension = 'wav';
+      }
+      
+      // Create a temporary file with the appropriate extension
+      tempFile = path.join(os.tmpdir(), `speech_${Date.now()}.${fileExtension}`);
       fs.writeFileSync(tempFile, audioBuffer);
       
-      try {
-        // Create a readable stream from the temp file
-        const audioFile = fs.createReadStream(tempFile);
-        
-        const transcription = await openai.audio.transcriptions.create({
-          file: audioFile,
-          model: "whisper-1", // Use the smallest, cheapest model
-          language: "en", // You can make this dynamic based on user preference
-        });
-        
-        // Remove the temporary file
-        fs.unlinkSync(tempFile);
-        
-        return res.json({ text: transcription.text });
-      } catch (err) {
-        // Make sure to clean up the temp file in case of error
-        if (fs.existsSync(tempFile)) {
-          fs.unlinkSync(tempFile);
-        }
-        throw err;
-      }
+      console.log(`Created temporary file: ${tempFile}`);
+      
+      // Create a readable stream from the temp file
+      const audioFile = fs.createReadStream(tempFile);
+      
+      // Process with Whisper API
+      const transcription = await openai.audio.transcriptions.create({
+        file: audioFile,
+        model: "whisper-1",
+        language: "en",
+        response_format: "json",
+      });
+      
+      // Clean up the temp file
+      fs.unlinkSync(tempFile);
+      tempFile = '';
+      
+      console.log(`Transcription successful: "${transcription.text}"`);
+      
+      return res.json({ text: transcription.text });
     } catch (error) {
+      // Clean up temp file if it exists
+      if (tempFile && fs.existsSync(tempFile)) {
+        try {
+          fs.unlinkSync(tempFile);
+        } catch (e) {
+          console.error("Error cleaning up temp file:", e);
+        }
+      }
+      
       console.error("Error in speech to text:", error);
       
       if (error instanceof Error) {
@@ -295,7 +334,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           });
         }
         
-        return res.status(500).json({ message: "Failed to convert speech to text", error: error.message });
+        return res.status(500).json({ 
+          message: "Failed to convert speech to text", 
+          error: error.message 
+        });
       }
       
       res.status(500).json({ message: "Failed to convert speech to text" });

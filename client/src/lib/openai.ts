@@ -52,20 +52,40 @@ export async function getDadJokes(count: number = 3) {
 // Function to convert speech to text using Whisper API
 export async function convertSpeechToText(audioBlob: Blob): Promise<string> {
   try {
+    // Make sure we have a proper audio blob
+    if (!audioBlob || audioBlob.size === 0) {
+      throw new Error("No audio data recorded");
+    }
+
+    // Create a proper audio blob with mp3 type for compatibility with OpenAI's Whisper API
+    const audioFile = new Blob([audioBlob], { type: "audio/mp3" });
+    
     // Convert audio blob to base64
     const reader = new FileReader();
-    const audioBase64Promise = new Promise<string>((resolve) => {
+    const audioBase64Promise = new Promise<string>((resolve, reject) => {
       reader.onloadend = () => resolve(reader.result as string);
-      reader.readAsDataURL(audioBlob);
+      reader.onerror = () => reject(new Error("Failed to read audio data"));
+      reader.readAsDataURL(audioFile);
     });
     
     const audioBase64 = await audioBase64Promise;
+    
+    if (!audioBase64 || audioBase64.length < 100) {
+      throw new Error("Invalid audio data");
+    }
+    
+    console.log("Sending audio data to server...");
     
     const response = await apiRequest("POST", "/api/speech-to-text", { 
       audio: audioBase64 
     });
     
     const data = await response.json();
+    
+    if (response.status !== 200) {
+      throw new Error(data.message || "Error from server");
+    }
+    
     return data.text || "";
   } catch (error) {
     console.error("Error converting speech to text:", error);

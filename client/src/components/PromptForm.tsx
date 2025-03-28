@@ -91,8 +91,33 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
       audioChunksRef.current = [];
       
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream);
       
+      // Check for supported mimeTypes
+      const mimeTypes = [
+        'audio/webm',
+        'audio/mp4',
+        'audio/ogg',
+        'audio/wav'
+      ];
+      
+      let mimeType = '';
+      for (const type of mimeTypes) {
+        if (MediaRecorder.isTypeSupported(type)) {
+          mimeType = type;
+          break;
+        }
+      }
+      
+      if (!mimeType) {
+        // Fallback to default
+        mimeType = '';
+      }
+      
+      // Create MediaRecorder with supported type if available
+      const options = mimeType ? { mimeType } : undefined;
+      console.log(`Using MIME type: ${mimeType || 'browser default'}`);
+      
+      const mediaRecorder = new MediaRecorder(stream, options);
       mediaRecorderRef.current = mediaRecorder;
       
       mediaRecorder.ondataavailable = (event) => {
@@ -102,17 +127,32 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
       };
       
       mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-        
-        // Convert speech to text
-        speechToTextMutation.mutate(audioBlob);
-        
-        // Stop all tracks in the stream to release the microphone
-        stream.getTracks().forEach(track => track.stop());
+        try {
+          if (audioChunksRef.current.length === 0) {
+            throw new Error("No audio data recorded");
+          }
+          
+          // Create the audio blob using the detected type
+          const audioBlob = new Blob(audioChunksRef.current, { type: mimeType || 'audio/webm' });
+          console.log(`Recording complete: ${audioBlob.size} bytes, type: ${audioBlob.type}`);
+          
+          // Convert speech to text
+          speechToTextMutation.mutate(audioBlob);
+        } catch (error) {
+          console.error("Error processing audio:", error);
+          toast({
+            title: "Audio processing error",
+            description: error instanceof Error ? error.message : "Failed to process audio recording.",
+            variant: "destructive",
+          });
+        } finally {
+          // Stop all tracks in the stream to release the microphone
+          stream.getTracks().forEach(track => track.stop());
+        }
       };
       
-      // Start recording
-      mediaRecorder.start();
+      // Start recording with small time intervals to collect data chunks
+      mediaRecorder.start(200);
       setIsRecording(true);
       
       toast({
