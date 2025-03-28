@@ -102,8 +102,10 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
   };
   
   // Function to detect silence in audio
-  const detectSilence = (stream: MediaStream, silenceThreshold = -50, silenceDuration = 1500) => {
+  const detectSilence = (stream: MediaStream, silenceThreshold = -45, silenceDuration = 1300) => {
     if (!isRecording) return;
+
+    console.log("Setting up silence detection with threshold:", silenceThreshold, "duration:", silenceDuration);
     
     try {
       // Clean up existing timer
@@ -116,10 +118,12 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       const analyser = audioContext.createAnalyser();
       const microphone = audioContext.createMediaStreamSource(stream);
-      const scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
+      // Use smaller buffer size for more frequent updates
+      const scriptProcessor = audioContext.createScriptProcessor(1024, 1, 1);
       
-      analyser.smoothingTimeConstant = 0.8;
-      analyser.fftSize = 1024;
+      // More responsive to volume changes
+      analyser.smoothingTimeConstant = 0.5;
+      analyser.fftSize = 512;
       
       microphone.connect(analyser);
       analyser.connect(scriptProcessor);
@@ -141,14 +145,23 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
         const array = new Uint8Array(analyser.frequencyBinCount);
         analyser.getByteFrequencyData(array);
         
-        // Calculate average volume level
+        // Calculate average volume level 
         const average = array.reduce((acc, value) => acc + value, 0) / array.length;
         
         // Convert to decibels
         const volume = 20 * Math.log10(average / 255);
         
-        // Check if sound is detected
-        const soundDetected = volume > silenceThreshold;
+        // Find peak level for better detection of quieter sounds
+        const peak = Math.max(...Array.from(array));
+        const peakDb = 20 * Math.log10(peak / 255);
+        
+        // Log volume levels for debugging, once every second
+        if (Date.now() % 1000 < 50) {
+          console.log(`Audio levels - Avg: ${volume.toFixed(2)}dB, Peak: ${peakDb.toFixed(2)}dB, Threshold: ${silenceThreshold}dB`);
+        }
+        
+        // Check if sound is detected - use either average or peak depending on which works better
+        const soundDetected = volume > silenceThreshold || peakDb > (silenceThreshold + 10);
         
         if (soundDetected) {
           lastSoundTime = Date.now();
