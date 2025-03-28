@@ -73,10 +73,10 @@ export default function LoadingState() {
       setAnimationStep((prev) => (prev + 1) % icons.length);
     }, 2000);
     
-    // Rotate dad jokes with timing matched to CSS animation (4.1s)
+    // Rotate dad jokes with timing matched to CSS animation (4.15s)
     const jokeInterval = setInterval(() => {
       setJokeIndex((prev) => (prev + 1) % jokes.length);
-    }, 4100);
+    }, 4150);
     
     return () => {
       clearInterval(dotInterval);
