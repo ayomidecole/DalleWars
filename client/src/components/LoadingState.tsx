@@ -73,10 +73,10 @@ export default function LoadingState() {
       setAnimationStep((prev) => (prev + 1) % icons.length);
     }, 2000);
     
-    // Rotate dad jokes (reduced time for faster transitions)
+    // Rotate dad jokes with timing matched to CSS animation
     const jokeInterval = setInterval(() => {
       setJokeIndex((prev) => (prev + 1) % jokes.length);
-    }, 3000);
+    }, 4500);
     
     return () => {
       clearInterval(dotInterval);
@@ -100,7 +100,7 @@ export default function LoadingState() {
       </div>
       
       <div className="space-y-4 text-center">
-        <p className="text-lg font-medium text-gray-800 dark:text-gray-200 transition-all duration-500 dark:neon-text italic min-h-[4rem] flex items-center justify-center">
+        <p className="text-lg font-medium text-gray-800 dark:text-gray-200 transition-all duration-500 dark:neon-text italic min-h-[4rem] flex items-center justify-center px-4 py-2 rounded-lg shadow-sm dark:shadow-[0_0_10px_rgba(16,163,127,0.1)]">
           "{jokes[jokeIndex] || "Loading jokes..."}"
         </p>
         <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-200">
