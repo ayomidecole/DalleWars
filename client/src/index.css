@@ -232,13 +232,17 @@
     z-index: 10;
   }
 
-  /* Mic button animation classes */
+  /* Mic button animation classes - shared styles */
   .mic-btn-recording {
-    animation: micPulse 1.5s infinite ease-in-out !important;
     position: relative;
   }
 
-  .mic-btn-recording::before {
+  /* Dark mode specific mic recording styles */
+  .dark .mic-btn-recording {
+    animation: micPulse 1.5s infinite ease-in-out !important;
+  }
+
+  .dark .mic-btn-recording::before {
     content: '';
     position: absolute;
     inset: -3px;
@@ -249,5 +253,39 @@
       rgba(var(--green-rgb), 0.3));
     z-index: -1;
     animation: micGlowRing 2s infinite ease-in-out;
+  }
+  
+  /* Light mode specific mic recording styles */
+  @keyframes lightModeMicPulse {
+    0% {
+      box-shadow: 0 0 0 1px rgba(var(--green-rgb), 0.4),
+                 0 0 0 3px rgba(var(--green-rgb), 0.15);
+      transform: scale(1);
+    }
+    50% {
+      box-shadow: 0 0 0 1px rgba(var(--green-rgb), 0.6),
+                 0 0 0 5px rgba(var(--green-rgb), 0.25);
+      transform: scale(1.05);
+    }
+    100% {
+      box-shadow: 0 0 0 1px rgba(var(--green-rgb), 0.4),
+                 0 0 0 3px rgba(var(--green-rgb), 0.15);
+      transform: scale(1);
+    }
+  }
+  
+  /* Light mode styles for mic button */
+  :not(.dark) .mic-btn-recording {
+    animation: lightModeMicPulse 1.5s infinite ease-in-out !important;
+    background-color: rgba(var(--green-rgb), 0.15) !important;
+    border: 1px solid rgba(var(--green-rgb), 0.5) !important;
+    color: rgb(var(--green-rgb)) !important;
+    font-weight: 500 !important;
+  }
+  
+  /* Icon color for light mode */
+  :not(.dark) .mic-btn-recording svg {
+    stroke: rgb(var(--green-rgb)) !important;
+    stroke-width: 2.2;
   }
 }
