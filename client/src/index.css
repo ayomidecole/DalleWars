@@ -298,5 +298,5 @@
 
 /* Target the joke paragraph in LoadingState */
 .space-y-4 p.text-lg.font-medium {
-  animation: crossfadeJoke 4.15s ease-in-out infinite;
+  animation: crossfadeJoke 4.3s ease-in-out infinite;
 }
