@@ -2,9 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Paintbrush, Mic, Settings } from "lucide-react";
+import { Paintbrush, Mic } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { generateImages, convertSpeechToText } from "@/lib/openai";
 import { queryClient } from "@/lib/queryClient";
@@ -19,7 +17,6 @@ interface PromptFormProps {
 export default function PromptForm({ onGenerateStart, onGenerateComplete }: PromptFormProps) {
   const [prompt, setPrompt] = useState("");
   const [isRecording, setIsRecording] = useState(false);
-  const [useVoiceAutoDetection, setUseVoiceAutoDetection] = useState(true);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const silenceTimerRef = useRef<number | null>(null);
@@ -106,7 +103,7 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
   
   // Function to detect silence in audio
   const detectSilence = (stream: MediaStream, silenceThreshold = -50, silenceDuration = 1500) => {
-    if (!useVoiceAutoDetection || !isRecording) return;
+    if (!isRecording) return;
     
     try {
       // Clean up existing timer
@@ -264,19 +261,12 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
       mediaRecorder.start(200);
       setIsRecording(true);
       
-      // Start silence detection if enabled
-      if (useVoiceAutoDetection) {
-        detectSilence(stream);
-        toast({
-          title: "Recording started (auto mode)",
-          description: "Speak clearly and I'll stop recording after a pause...",
-        });
-      } else {
-        toast({
-          title: "Recording started",
-          description: "Speak clearly and click the mic button when done...",
-        });
-      }
+      // Always use silence detection
+      detectSilence(stream);
+      toast({
+        title: "Recording started",
+        description: "Speak clearly and I'll stop recording after 1.5 seconds of silence...",
+      });
     } catch (error) {
       console.error("Error starting recording:", error);
       toast({
@@ -333,21 +323,7 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
                 </Button>
               </div>
               
-              <div className="flex flex-wrap items-center justify-between pt-4">
-                <div className="flex items-center space-x-2 mb-2 sm:mb-0">
-                  <Switch
-                    id="auto-detection"
-                    checked={useVoiceAutoDetection}
-                    onCheckedChange={setUseVoiceAutoDetection}
-                  />
-                  <Label 
-                    htmlFor="auto-detection"
-                    className="text-sm text-gray-600 dark:text-gray-400 cursor-pointer"
-                  >
-                    Auto-detect speech end
-                  </Label>
-                </div>
-                
+              <div className="flex justify-end pt-4">
                 <Button 
                   type="submit" 
                   disabled={generateMutation.isPending}
