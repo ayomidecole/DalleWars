@@ -100,7 +100,7 @@ export default function LoadingState() {
       </div>
       
       <div className="space-y-4 text-center">
-        <p className="text-lg font-medium text-gray-800 dark:text-gray-200 transition-all duration-500 dark:neon-text italic min-h-[4rem] flex items-center justify-center px-4 py-2 rounded-lg shadow-sm dark:shadow-[0_0_10px_rgba(16,163,127,0.1)]">
+        <p className="text-lg font-medium text-gray-800 dark:text-gray-200 transition-colors duration-300 dark:neon-text italic min-h-[4rem] flex items-center justify-center">
           "{jokes[jokeIndex] || "Loading jokes..."}"
         </p>
         <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-200">

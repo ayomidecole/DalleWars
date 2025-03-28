@@ -290,16 +290,13 @@
   }
 }
 
-/* Joke text fade animation */
-@keyframes fadeJoke {
-  0%, 100% { opacity: 1; transform: translateY(0); text-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-  40% { opacity: 0.7; transform: translateY(-3px); text-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-  50% { opacity: 0.2; transform: translateY(-5px); text-shadow: 0 0 0 rgba(0,0,0,0); }
-  60% { opacity: 0.7; transform: translateY(3px); text-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+/* Joke text crossfade animation */
+@keyframes crossfadeJoke {
+  0%, 100% { opacity: 1; }
+  45%, 55% { opacity: 0; }
 }
 
 /* Target the joke paragraph in LoadingState */
 .space-y-4 p.text-lg.font-medium {
-  animation: fadeJoke 4.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-  backface-visibility: hidden;
+  animation: crossfadeJoke 4.5s ease-in-out infinite;
 }
