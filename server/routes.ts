@@ -234,6 +234,62 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to generate jokes" });
     }
   });
+  
+  // Speech to text conversion using Whisper API
+  app.post("/api/speech-to-text", async (req: Request, res: Response) => {
+    try {
+      if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY.trim() === "") {
+        return res.status(500).json({ message: "OpenAI API key not configured" });
+      }
+      
+      if (!req.body.audio) {
+        return res.status(400).json({ message: "No audio data provided" });
+      }
+      
+      // The audio data should be a base64 encoded string in the format: data:audio/webm;base64,...
+      const base64Audio = req.body.audio.split(',')[1];
+      
+      if (!base64Audio) {
+        return res.status(400).json({ message: "Invalid audio data format" });
+      }
+      
+      // Convert base64 to buffer
+      const audioBuffer = Buffer.from(base64Audio, 'base64');
+      
+      // Create a temporary file
+      const tempFile = require('path').join(require('os').tmpdir(), `${Date.now()}.webm`);
+      require('fs').writeFileSync(tempFile, audioBuffer);
+      
+      // Create a readable stream from the temp file
+      const audioStream = require('fs').createReadStream(tempFile);
+      
+      const transcription = await openai.audio.transcriptions.create({
+        file: audioStream,
+        model: "whisper-1", // Use the smallest, cheapest model
+        language: "en", // You can make this dynamic based on user preference
+      });
+      
+      // Remove the temporary file
+      require('fs').unlinkSync(tempFile);
+      
+      res.json({ text: transcription.text });
+    } catch (error) {
+      console.error("Error in speech to text:", error);
+      
+      if (error instanceof Error) {
+        if (error instanceof OpenAI.APIError) {
+          return res.status(error.status || 500).json({
+            message: "OpenAI API error",
+            error: error.message
+          });
+        }
+        
+        return res.status(500).json({ message: "Failed to convert speech to text", error: error.message });
+      }
+      
+      res.status(500).json({ message: "Failed to convert speech to text" });
+    }
+  });
 
   const httpServer = createServer(app);
   return httpServer;

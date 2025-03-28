@@ -48,3 +48,27 @@ export async function getDadJokes(count: number = 3) {
     return [];
   }
 }
+
+// Function to convert speech to text using Whisper API
+export async function convertSpeechToText(audioBlob: Blob): Promise<string> {
+  try {
+    // Convert audio blob to base64
+    const reader = new FileReader();
+    const audioBase64Promise = new Promise<string>((resolve) => {
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.readAsDataURL(audioBlob);
+    });
+    
+    const audioBase64 = await audioBase64Promise;
+    
+    const response = await apiRequest("POST", "/api/speech-to-text", { 
+      audio: audioBase64 
+    });
+    
+    const data = await response.json();
+    return data.text || "";
+  } catch (error) {
+    console.error("Error converting speech to text:", error);
+    throw error;
+  }
+}
