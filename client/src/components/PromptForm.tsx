@@ -241,7 +241,7 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
                   variant="ghost"
                   className={`absolute bottom-2 right-2 h-8 w-8 rounded-full transition-all duration-300 
                     ${isRecording 
-                      ? 'bg-green-500/20 text-white dark:text-white mic-btn-recording' 
+                      ? 'bg-green-500/10 text-white dark:text-white mic-btn-recording' 
                       : 'text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary'}`}
                   onClick={isRecording ? stopRecording : startRecording}
                   disabled={speechToTextMutation.isPending}
@@ -249,7 +249,7 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
                 >
                   <Mic className={`h-5 w-5 ${isRecording ? 'text-white dark:text-white' : ''}`} />
                   {isRecording && (
-                    <span className="absolute inset-0 rounded-full bg-gradient-to-r from-green-400 via-green-500 to-emerald-600 opacity-30 blur-sm"></span>
+                    <span className="absolute inset-0 rounded-full bg-gradient-to-r from-green-400/70 via-green-500/50 to-emerald-600/70 opacity-20 blur-sm"></span>
                   )}
                 </Button>
               </div>
