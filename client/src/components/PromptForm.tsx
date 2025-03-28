@@ -101,101 +101,11 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
     generateMutation.mutate(prompt);
   };
   
-  // Function to detect silence in audio
-  const detectSilence = (stream: MediaStream, silenceThreshold = -35, silenceDuration = 1000) => {
-    if (!isRecording) return;
-
-    console.log("Setting up silence detection with threshold:", silenceThreshold, "duration:", silenceDuration);
-    
-    try {
-      // Clean up existing timer
-      if (silenceTimerRef.current) {
-        clearTimeout(silenceTimerRef.current);
-        silenceTimerRef.current = null;
-      }
-      
-      // Create audio context
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const analyser = audioContext.createAnalyser();
-      const microphone = audioContext.createMediaStreamSource(stream);
-      // Use smaller buffer size for more frequent updates
-      const scriptProcessor = audioContext.createScriptProcessor(1024, 1, 1);
-      
-      // More responsive to volume changes
-      analyser.smoothingTimeConstant = 0.5;
-      analyser.fftSize = 512;
-      
-      microphone.connect(analyser);
-      analyser.connect(scriptProcessor);
-      scriptProcessor.connect(audioContext.destination);
-      
-      // Last time sound was detected
-      let lastSoundTime = Date.now();
-      let isSilent = true;
-      
-      scriptProcessor.onaudioprocess = () => {
-        if (!isRecording) {
-          microphone.disconnect();
-          analyser.disconnect();
-          scriptProcessor.disconnect();
-          audioContext.close();
-          return;
-        }
-        
-        const array = new Uint8Array(analyser.frequencyBinCount);
-        analyser.getByteFrequencyData(array);
-        
-        // Calculate average volume level 
-        const average = array.reduce((acc, value) => acc + value, 0) / array.length;
-        
-        // Convert to decibels
-        const volume = 20 * Math.log10(average / 255);
-        
-        // Find peak level for better detection of quieter sounds
-        const peak = Math.max(...Array.from(array));
-        const peakDb = 20 * Math.log10(peak / 255);
-        
-        // Log volume levels for debugging, once every second
-        if (Date.now() % 1000 < 50) {
-          console.log(`Audio levels - Avg: ${volume.toFixed(2)}dB, Peak: ${peakDb.toFixed(2)}dB, Threshold: ${silenceThreshold}dB`);
-        }
-        
-        // Check if sound is detected - use either average or peak depending on which works better
-        const soundDetected = volume > silenceThreshold || peakDb > (silenceThreshold + 10);
-        
-        if (soundDetected) {
-          lastSoundTime = Date.now();
-          isSilent = false;
-        } else if (!isSilent) {
-          // Calculate how long it's been silent
-          const silenceTime = Date.now() - lastSoundTime;
-          
-          // Show approaching silence threshold
-          if (silenceTime > (silenceDuration / 2)) {
-            console.log(`Approaching silence threshold: ${silenceTime}ms / ${silenceDuration}ms`);
-          }
-          
-          if (silenceTime > silenceDuration) {
-            // After silence period, stop recording
-            console.log(`Auto-stopping recording after ${silenceTime}ms of silence`);
-            isSilent = true;
-            
-            // Force the stop now
-            if (isRecording && mediaRecorderRef.current) {
-              stopRecording();
-            }
-            
-            // Clean up audio resources
-            microphone.disconnect();
-            analyser.disconnect();
-            scriptProcessor.disconnect();
-            audioContext.close();
-          }
-        }
-      };
-    } catch (error) {
-      console.error("Error setting up silence detection:", error);
-    }
+  // Function to detect silence in audio - we've removed auto-detection
+  const detectSilence = (stream: MediaStream) => {
+    // This function is intentionally left empty as we're now using manual stopping
+    // Keeping the function for future expansion if needed
+    return;
   };
 
   const startRecording = async () => {
@@ -277,11 +187,10 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
       mediaRecorder.start(200);
       setIsRecording(true);
       
-      // Always use silence detection
-      detectSilence(stream);
+      // Skip silence detection - user will manually stop
       toast({
         title: "Recording started",
-        description: "Speak clearly and I'll stop recording when you pause speaking.",
+        description: "Speak clearly and click the mic button again when you're done.",
       });
     } catch (error) {
       console.error("Error starting recording:", error);
@@ -330,12 +239,18 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
                   type="button"
                   size="icon"
                   variant="ghost"
-                  className={`absolute bottom-2 right-2 h-8 w-8 rounded-full text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors ${isRecording ? 'animate-pulse text-red-500 dark:text-red-500' : ''}`}
+                  className={`absolute bottom-2 right-2 h-8 w-8 rounded-full transition-all duration-300 
+                    ${isRecording 
+                      ? 'bg-green-500/20 text-white dark:text-white mic-btn-recording' 
+                      : 'text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary'}`}
                   onClick={isRecording ? stopRecording : startRecording}
                   disabled={speechToTextMutation.isPending}
                   title={isRecording ? "Stop recording" : "Start voice input"}
                 >
-                  <Mic className={`h-5 w-5 ${isRecording ? 'text-red-500 dark:text-red-500' : ''}`} />
+                  <Mic className={`h-5 w-5 ${isRecording ? 'text-white dark:text-white' : ''}`} />
+                  {isRecording && (
+                    <span className="absolute inset-0 rounded-full bg-gradient-to-r from-green-400 via-green-500 to-emerald-600 opacity-30 blur-sm"></span>
+                  )}
                 </Button>
               </div>
               
