@@ -1,8 +1,10 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
-import { Paintbrush, Mic } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Paintbrush, Mic, Settings } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { generateImages, convertSpeechToText } from "@/lib/openai";
 import { queryClient } from "@/lib/queryClient";
@@ -17,9 +19,25 @@ interface PromptFormProps {
 export default function PromptForm({ onGenerateStart, onGenerateComplete }: PromptFormProps) {
   const [prompt, setPrompt] = useState("");
   const [isRecording, setIsRecording] = useState(false);
+  const [useVoiceAutoDetection, setUseVoiceAutoDetection] = useState(true);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
+  const silenceTimerRef = useRef<number | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
   const { toast } = useToast();
+  
+  // Clean up resources when component unmounts
+  useEffect(() => {
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+      }
+      
+      if (silenceTimerRef.current) {
+        clearTimeout(silenceTimerRef.current);
+      }
+    };
+  }, []);
   
   const generateMutation = useMutation({
     mutationFn: generateImages,
@@ -86,11 +104,99 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
     generateMutation.mutate(prompt);
   };
   
+  // Function to detect silence in audio
+  const detectSilence = (stream: MediaStream, silenceThreshold = -50, silenceDuration = 1500) => {
+    if (!useVoiceAutoDetection || !isRecording) return;
+    
+    try {
+      // Clean up existing timer
+      if (silenceTimerRef.current) {
+        clearTimeout(silenceTimerRef.current);
+        silenceTimerRef.current = null;
+      }
+      
+      // Create audio context
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const analyser = audioContext.createAnalyser();
+      const microphone = audioContext.createMediaStreamSource(stream);
+      const scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
+      
+      analyser.smoothingTimeConstant = 0.8;
+      analyser.fftSize = 1024;
+      
+      microphone.connect(analyser);
+      analyser.connect(scriptProcessor);
+      scriptProcessor.connect(audioContext.destination);
+      
+      // Last time sound was detected
+      let lastSoundTime = Date.now();
+      let isSilent = true;
+      
+      scriptProcessor.onaudioprocess = () => {
+        if (!isRecording) {
+          microphone.disconnect();
+          analyser.disconnect();
+          scriptProcessor.disconnect();
+          audioContext.close();
+          return;
+        }
+        
+        const array = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(array);
+        
+        // Calculate average volume level
+        const average = array.reduce((acc, value) => acc + value, 0) / array.length;
+        
+        // Convert to decibels
+        const volume = 20 * Math.log10(average / 255);
+        
+        // Check if sound is detected
+        const soundDetected = volume > silenceThreshold;
+        
+        if (soundDetected) {
+          lastSoundTime = Date.now();
+          isSilent = false;
+        } else if (!isSilent) {
+          // Calculate how long it's been silent
+          const silenceTime = Date.now() - lastSoundTime;
+          
+          if (silenceTime > silenceDuration) {
+            // After silence period, stop recording
+            console.log(`Auto-stopping recording after ${silenceDuration}ms of silence`);
+            isSilent = true;
+            
+            // Delay stop slightly to capture any trailing audio
+            silenceTimerRef.current = window.setTimeout(() => {
+              if (isRecording && mediaRecorderRef.current) {
+                stopRecording();
+              }
+              
+              // Clean up
+              microphone.disconnect();
+              analyser.disconnect();
+              scriptProcessor.disconnect();
+              audioContext.close();
+            }, 500);
+          }
+        }
+      };
+    } catch (error) {
+      console.error("Error setting up silence detection:", error);
+    }
+  };
+
   const startRecording = async () => {
     try {
+      // Clear any existing silence timer
+      if (silenceTimerRef.current) {
+        clearTimeout(silenceTimerRef.current);
+        silenceTimerRef.current = null;
+      }
+      
       audioChunksRef.current = [];
       
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      streamRef.current = stream;
       
       // Check for supported mimeTypes
       const mimeTypes = [
@@ -147,7 +253,10 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
           });
         } finally {
           // Stop all tracks in the stream to release the microphone
-          stream.getTracks().forEach(track => track.stop());
+          if (streamRef.current) {
+            streamRef.current.getTracks().forEach(track => track.stop());
+            streamRef.current = null;
+          }
         }
       };
       
@@ -155,10 +264,19 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
       mediaRecorder.start(200);
       setIsRecording(true);
       
-      toast({
-        title: "Recording started",
-        description: "Speak clearly into your microphone...",
-      });
+      // Start silence detection if enabled
+      if (useVoiceAutoDetection) {
+        detectSilence(stream);
+        toast({
+          title: "Recording started (auto mode)",
+          description: "Speak clearly and I'll stop recording after a pause...",
+        });
+      } else {
+        toast({
+          title: "Recording started",
+          description: "Speak clearly and click the mic button when done...",
+        });
+      }
     } catch (error) {
       console.error("Error starting recording:", error);
       toast({
@@ -215,7 +333,21 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
                 </Button>
               </div>
               
-              <div className="flex justify-end pt-2">
+              <div className="flex flex-wrap items-center justify-between pt-4">
+                <div className="flex items-center space-x-2 mb-2 sm:mb-0">
+                  <Switch
+                    id="auto-detection"
+                    checked={useVoiceAutoDetection}
+                    onCheckedChange={setUseVoiceAutoDetection}
+                  />
+                  <Label 
+                    htmlFor="auto-detection"
+                    className="text-sm text-gray-600 dark:text-gray-400 cursor-pointer"
+                  >
+                    Auto-detect speech end
+                  </Label>
+                </div>
+                
                 <Button 
                   type="submit" 
                   disabled={generateMutation.isPending}
