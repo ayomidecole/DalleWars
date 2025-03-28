@@ -293,10 +293,10 @@
 /* Joke text crossfade animation */
 @keyframes crossfadeJoke {
   0%, 100% { opacity: 1; }
-  45%, 55% { opacity: 0; }
+  40%, 60% { opacity: 0; }
 }
 
 /* Target the joke paragraph in LoadingState */
 .space-y-4 p.text-lg.font-medium {
-  animation: crossfadeJoke 4.3s ease-in-out infinite;
+  animation: crossfadeJoke 4.5s ease-in-out infinite;
 }
