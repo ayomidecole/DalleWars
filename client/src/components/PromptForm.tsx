@@ -102,7 +102,7 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
   };
   
   // Function to detect silence in audio
-  const detectSilence = (stream: MediaStream, silenceThreshold = -45, silenceDuration = 1300) => {
+  const detectSilence = (stream: MediaStream, silenceThreshold = -35, silenceDuration = 1000) => {
     if (!isRecording) return;
 
     console.log("Setting up silence detection with threshold:", silenceThreshold, "duration:", silenceDuration);
@@ -170,23 +170,26 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
           // Calculate how long it's been silent
           const silenceTime = Date.now() - lastSoundTime;
           
+          // Show approaching silence threshold
+          if (silenceTime > (silenceDuration / 2)) {
+            console.log(`Approaching silence threshold: ${silenceTime}ms / ${silenceDuration}ms`);
+          }
+          
           if (silenceTime > silenceDuration) {
             // After silence period, stop recording
-            console.log(`Auto-stopping recording after ${silenceDuration}ms of silence`);
+            console.log(`Auto-stopping recording after ${silenceTime}ms of silence`);
             isSilent = true;
             
-            // Delay stop slightly to capture any trailing audio
-            silenceTimerRef.current = window.setTimeout(() => {
-              if (isRecording && mediaRecorderRef.current) {
-                stopRecording();
-              }
-              
-              // Clean up
-              microphone.disconnect();
-              analyser.disconnect();
-              scriptProcessor.disconnect();
-              audioContext.close();
-            }, 500);
+            // Force the stop now
+            if (isRecording && mediaRecorderRef.current) {
+              stopRecording();
+            }
+            
+            // Clean up audio resources
+            microphone.disconnect();
+            analyser.disconnect();
+            scriptProcessor.disconnect();
+            audioContext.close();
           }
         }
       };
@@ -278,7 +281,7 @@ export default function PromptForm({ onGenerateStart, onGenerateComplete }: Prom
       detectSilence(stream);
       toast({
         title: "Recording started",
-        description: "Speak clearly and I'll stop recording after 1.5 seconds of silence...",
+        description: "Speak clearly and I'll stop recording when you pause speaking.",
       });
     } catch (error) {
       console.error("Error starting recording:", error);
