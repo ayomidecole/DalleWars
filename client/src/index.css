@@ -289,3 +289,15 @@
     stroke-width: 2.2;
   }
 }
+
+/* Joke text fade animation */
+@keyframes fadeJoke {
+  0%, 100% { opacity: 1; transform: translateY(0); }
+  45% { opacity: 0; transform: translateY(-10px); }
+  55% { opacity: 0; transform: translateY(10px); }
+}
+
+/* Target the joke paragraph in LoadingState */
+.space-y-4 p.text-lg.font-medium {
+  animation: fadeJoke 3s ease-in-out infinite;
+}
