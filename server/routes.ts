@@ -5,6 +5,9 @@ import { insertImagePairSchema, insertVoteSchema } from "@shared/schema";
 import OpenAI from "openai";
 import { z } from "zod";
 import { fromZodError } from "zod-validation-error";
+import * as fs from 'fs';
+import * as path from 'path';
+import * as os from 'os';
 
 // Initialize OpenAI client
 const openai = new OpenAI({
@@ -257,22 +260,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const audioBuffer = Buffer.from(base64Audio, 'base64');
       
       // Create a temporary file
-      const tempFile = require('path').join(require('os').tmpdir(), `${Date.now()}.webm`);
-      require('fs').writeFileSync(tempFile, audioBuffer);
+      const tempFile = path.join(os.tmpdir(), `${Date.now()}.webm`);
+      fs.writeFileSync(tempFile, audioBuffer);
       
-      // Create a readable stream from the temp file
-      const audioStream = require('fs').createReadStream(tempFile);
-      
-      const transcription = await openai.audio.transcriptions.create({
-        file: audioStream,
-        model: "whisper-1", // Use the smallest, cheapest model
-        language: "en", // You can make this dynamic based on user preference
-      });
-      
-      // Remove the temporary file
-      require('fs').unlinkSync(tempFile);
-      
-      res.json({ text: transcription.text });
+      try {
+        // Create a readable stream from the temp file
+        const audioFile = fs.createReadStream(tempFile);
+        
+        const transcription = await openai.audio.transcriptions.create({
+          file: audioFile,
+          model: "whisper-1", // Use the smallest, cheapest model
+          language: "en", // You can make this dynamic based on user preference
+        });
+        
+        // Remove the temporary file
+        fs.unlinkSync(tempFile);
+        
+        return res.json({ text: transcription.text });
+      } catch (err) {
+        // Make sure to clean up the temp file in case of error
+        if (fs.existsSync(tempFile)) {
+          fs.unlinkSync(tempFile);
+        }
+        throw err;
+      }
     } catch (error) {
       console.error("Error in speech to text:", error);
       
