@@ -300,3 +300,130 @@
 .space-y-4 p.text-lg.font-medium {
   animation: crossfadeJoke 4.5s ease-in-out infinite;
 }
+
+/* Light Mode Hover Effects */
+@keyframes lightModeShadowPulse {
+  0% {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transform: translateY(0);
+  }
+  50% {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+  }
+  100% {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transform: translateY(0);
+  }
+}
+
+@keyframes lightModeGradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Score display hover for light mode */
+:not(.dark) .score-item {
+  transition: all 0.3s ease;
+}
+
+:not(.dark) .score-group:hover .score-item {
+  filter: saturate(0.8);
+}
+
+:not(.dark) .score-group:hover .score-item:hover {
+  filter: saturate(1.2) contrast(1.05);
+  transform: scale(1.03) translateY(-1px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* Image card hover for light mode */
+:not(.dark) .image-card {
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+:not(.dark) .image-card:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Button hover effects for light mode */
+:not(.dark) .btn-primary {
+  transition: all 0.3s ease;
+}
+
+:not(.dark) .btn-primary:hover {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+/* Model name hover for light mode */
+:not(.dark) .model-name {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+:not(.dark) .model-name:hover {
+  color: rgb(var(--primary-rgb));
+}
+
+:not(.dark) .model-name::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: rgb(var(--primary-rgb));
+  transition: all 0.3s ease;
+}
+
+:not(.dark) .model-name:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+/* Progress bars hover effect for light mode */
+:not(.dark) .score-bar-container {
+  transition: all 0.3s ease;
+  background-color: #f1f5f9;
+}
+
+:not(.dark) .score-bar-container:hover {
+  background-color: #e2e8f0;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(0, 0, 0, 0.03);
+  transform: translateY(-1px) scale(1.005);
+}
+
+/* Loading state icon hover effect */
+:not(.dark) .loading-icon-container {
+  transition: all 0.3s ease;
+}
+
+:not(.dark) .loading-icon-container:hover {
+  animation: lightModeShadowPulse 3s infinite ease-in-out;
+}
+
+/* Vote button hover effect for light mode */
+:not(.dark) .vote-button {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:not(.dark) .vote-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+:not(.dark) .vote-button:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
