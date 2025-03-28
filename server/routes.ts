@@ -201,20 +201,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const count = req.query.count ? parseInt(req.query.count as string) : 3;
       
+      // Add timestamp and random seed to ensure different jokes each time
+      const timestamp = new Date().toISOString();
+      const randomSeed = Math.floor(Math.random() * 10000);
+      
       const response = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
         messages: [
           {
             role: "system",
-            content: "You are a dad joke generator. Generate short, family-friendly dad jokes. Each joke should be in title case."
+            content: "You are a dad joke generator that creates diverse, unique jokes. Never repeat jokes, especially avoid the common 'scarecrow' joke. Create original, family-friendly puns and wordplay."
           },
           {
             role: "user",
-            content: `Generate ${count} dad jokes. Each joke should be on a new line. Keep them short and funny. The response should only contain the jokes, nothing else.`
+            content: `Generate ${count} original dad jokes. Each joke should be on a new line. Include variety - jokes about animals, food, everyday objects. No jokes about scarecrows. Current timestamp: ${timestamp}. Random seed: ${randomSeed}. The response should only contain the jokes, nothing else.`
           }
         ],
-        temperature: 0.7,
-        max_tokens: 150
+        temperature: 1.0, // Increase temperature for more randomness
+        max_tokens: 150,
+        presence_penalty: 0.6, // Discourage repetition of similar phrases
+        frequency_penalty: 0.8 // Strongly discourage repeating the same jokes
       });
       
       const jokes = response.choices[0]?.message.content?.split('\n').filter(joke => joke.trim() !== '') || [];
