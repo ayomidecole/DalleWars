@@ -92,7 +92,7 @@ export default function LoadingState() {
   
   return (
     <div className="mb-12 py-16 flex flex-col items-center justify-center">
-      <div className="relative mb-8 loading-icon-container">
+      <div className="relative mb-8">
         <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 via-primary to-purple-500 opacity-20 dark:opacity-30 blur-xl animate-pulse"></div>
         <div className="relative bg-white dark:bg-gray-900 rounded-full p-6 shadow-xl border border-gray-100 dark:border-gray-800 dark:shadow-[0_0_15px_rgba(16,163,127,0.2)] transition-all duration-200">
           {icons[animationStep]}

@@ -34,7 +34,7 @@ export default function ScoreDisplay() {
               </div>
             </div>
             
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mt-6 transition-colors overflow-hidden score-bar-container">
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mt-6 transition-colors overflow-hidden">
               <div 
                 className="bg-gray-600 dark:bg-gray-500 h-3 rounded-full transition-all duration-500 shadow-[0_0_2px_rgba(0,0,0,0.05)] hover:shadow-[0_0_4px_rgba(0,0,0,0.1)] dark:shadow-[0_0_5px_rgba(255,255,255,0.15)] dark:hover:shadow-[0_0_8px_rgba(255,255,255,0.3)]" 
                 style={{ width: `${dalle2Percentage}%` }}
