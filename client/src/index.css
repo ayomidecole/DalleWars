@@ -56,39 +56,6 @@
   .dark .btn-primary:hover {
     box-shadow: 0 0 30px rgba(16, 163, 127, 0.5);
   }
-  
-  .dark .vote-button {
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .dark .vote-button::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-      to bottom right,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0) 40%,
-      rgba(255, 255, 255, 0.15) 50%,
-      rgba(255, 255, 255, 0) 60%,
-      rgba(255, 255, 255, 0) 100%
-    );
-    transform: rotate(45deg);
-    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-    opacity: 0;
-  }
-  
-  .dark .vote-button:hover::after {
-    opacity: 1;
-    transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
-    left: 0;
-    top: 0;
-    transform: rotate(45deg) translate(100%, 100%);
-  }
 
   /* Glow for dark mode cards */
   .dark .card-glow {
@@ -449,37 +416,14 @@
 /* Vote button hover effect for light mode */
 :not(.dark) .vote-button {
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
 }
 
 :not(.dark) .vote-button:hover:not(:disabled) {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  letter-spacing: 0.03em;
-}
-
-:not(.dark) .vote-button:hover:not(:disabled)::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
-  transform: translateX(-100%);
-  animation: shimmer 1.5s infinite;
-  z-index: -1;
-}
-
-@keyframes shimmer {
-  100% {
-    transform: translateX(100%);
-  }
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 :not(.dark) .vote-button:active:not(:disabled) {
   transform: translateY(1px);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
