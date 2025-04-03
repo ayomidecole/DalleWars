@@ -27,9 +27,9 @@ export default function LoadingState() {
   ];
 
   const icons = [
-    <Wand2 key="wand" className="h-7 w-7 text-primary animate-bounce transition-all duration-500" />,
-    <Sparkles key="sparkles" className="h-7 w-7 text-amber-500 animate-fadeInOut transition-all duration-500" />,
-    <Palette key="palette" className="h-7 w-7 text-violet-500 animate-bounce transition-all duration-500" />
+    <Wand2 key="wand" className="h-7 w-7 text-primary animate-slow-bounce transition-all duration-1000" />,
+    <Sparkles key="sparkles" className="h-7 w-7 text-amber-500 animate-fadeInOut transition-all duration-1000" />,
+    <Palette key="palette" className="h-7 w-7 text-violet-500 animate-slow-bounce transition-all duration-1000" />
   ];
   
   // Fetch some fresh jokes when component mounts
@@ -55,15 +55,15 @@ export default function LoadingState() {
   }, []);
   
   useEffect(() => {
-    // Define a consistent base animation cycle - using 3.5 seconds for smoother transitions
-    const mainCycle = 3500;
+    // Define a longer base animation cycle - increased to 5 seconds for slower transitions
+    const mainCycle = 5000;
     
-    // Animate dots for loading ellipsis
+    // Animate dots for loading ellipsis - slowed down
     const dotInterval = setInterval(() => {
       setDotCount((prev) => (prev % 3) + 1);
-    }, 500); // Keep this relatively quick
+    }, 800); // Slowed down from 500ms
     
-    // Change messages over time with a comfortable pace
+    // Change messages over time with a slower, more comfortable pace
     const messageInterval = setInterval(() => {
       setMessage((prev) => {
         const currentIndex = messages.indexOf(prev);
@@ -71,15 +71,15 @@ export default function LoadingState() {
       });
     }, mainCycle);
     
-    // Icon animation rotation - slower for smoother transitions
+    // Icon animation rotation - much slower for smoother transitions
     const animationInterval = setInterval(() => {
       setAnimationStep((prev) => (prev + 1) % icons.length);
     }, mainCycle * 1.5);
     
-    // Rotate dad jokes at a good pace that allows for reading
+    // Rotate dad jokes at a slower pace that allows for easy reading
     const jokeInterval = setInterval(() => {
       setJokeIndex((prev) => (prev + 1) % jokes.length);
-    }, mainCycle * 1.5);
+    }, mainCycle * 1.6);
     
     return () => {
       clearInterval(dotInterval);
@@ -96,13 +96,13 @@ export default function LoadingState() {
   return (
     <div className="mb-12 py-16 flex flex-col items-center justify-center">
       <div className="relative mb-8">
-        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 via-primary to-purple-500 opacity-20 dark:opacity-30 blur-xl animate-pulse" style={{ animationDuration: "3.5s" }}></div>
+        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 via-primary to-purple-500 opacity-20 dark:opacity-30 blur-xl animate-pulse" style={{ animationDuration: "6s" }}></div>
         <div className="relative bg-white dark:bg-gray-900 rounded-full p-6 shadow-xl border border-gray-100 dark:border-gray-800 dark:shadow-[0_0_15px_rgba(16,163,127,0.2)] transition-all duration-500">
           <div 
             key={animationStep} 
-            className="transition-all duration-500 ease-in-out animate-fadeInOut"
+            className="transition-all duration-1000 ease-in-out animate-fadeInOut"
             style={{ 
-              animationDuration: "2s", 
+              animationDuration: "5s", 
               transform: `scale(${animationStep === 0 ? '1' : '0.95'})${animationStep === 2 ? ' rotate(-5deg)' : ''}` 
             }}
           >
@@ -118,9 +118,9 @@ export default function LoadingState() {
       </div>
       
       <div className="mt-6 flex justify-center space-x-3">
-        <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-bounce" style={{ animationDelay: "0ms" }}></div>
-        <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-bounce" style={{ animationDelay: "150ms" }}></div>
-        <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-bounce" style={{ animationDelay: "300ms" }}></div>
+        <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-slow-bounce" style={{ animationDelay: "0ms" }}></div>
+        <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-slow-bounce" style={{ animationDelay: "300ms" }}></div>
+        <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-slow-bounce" style={{ animationDelay: "600ms" }}></div>
       </div>
     </div>
   );

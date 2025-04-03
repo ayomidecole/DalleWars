@@ -48,14 +48,14 @@
     transform: translateY(-2px) scale(1.01);
   }
   
-  /* Custom fade animations for loading state */
+  /* Custom fade animations for loading state - slower phases */
   @keyframes fadeInOut {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 1; }
+    0%, 10%, 90%, 100% { opacity: 0.4; }
+    40%, 60% { opacity: 1; }
   }
   
   .animate-fadeInOut {
-    animation: fadeInOut 3.5s ease-in-out infinite;
+    animation: fadeInOut 5s ease-in-out infinite;
   }
   
   .icon-transition {
@@ -313,13 +313,29 @@
   }
 }
 
-/* Joke text crossfade animation */
+/* Joke text crossfade animation - slower phases */
 @keyframes crossfadeJoke {
-  0%, 100% { opacity: 1; }
-  40%, 60% { opacity: 0; }
+  0%, 15%, 85%, 100% { opacity: 1; }
+  45%, 55% { opacity: 0; }
 }
 
 /* Target the joke paragraph in LoadingState */
 .space-y-4 p.text-lg.font-medium {
-  animation: crossfadeJoke 4.5s ease-in-out infinite;
+  animation: crossfadeJoke 6.5s ease-in-out infinite;
+}
+
+/* Custom slow bounce animation */
+@keyframes slowBounce {
+  0%, 20%, 80%, 100% {
+    transform: translateY(-20%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.animate-slow-bounce {
+  animation: slowBounce 2.2s infinite;
 }
