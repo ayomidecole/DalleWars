@@ -27,9 +27,9 @@ export default function LoadingState() {
   ];
 
   const icons = [
-    <Wand2 key="wand" className="h-7 w-7 text-primary animate-bounce" />,
-    <Sparkles key="sparkles" className="h-7 w-7 text-amber-500 animate-pulse" style={{ animationDuration: "2s" }} />,
-    <Palette key="palette" className="h-7 w-7 text-violet-500 animate-ping opacity-75" style={{ animationDuration: "2s" }} />
+    <Wand2 key="wand" className="h-7 w-7 text-primary animate-bounce transition-all duration-500" />,
+    <Sparkles key="sparkles" className="h-7 w-7 text-amber-500 animate-fadeInOut transition-all duration-500" />,
+    <Palette key="palette" className="h-7 w-7 text-violet-500 animate-bounce transition-all duration-500" />
   ];
   
   // Fetch some fresh jokes when component mounts
@@ -55,31 +55,31 @@ export default function LoadingState() {
   }, []);
   
   useEffect(() => {
-    // Define a consistent base animation cycle - reduced to 2.25 seconds (2:1 ratio)
-    const mainCycle = 2250;
+    // Define a consistent base animation cycle - using 3.5 seconds for smoother transitions
+    const mainCycle = 3500;
     
-    // Animate dots for loading ellipsis (faster dots)
+    // Animate dots for loading ellipsis
     const dotInterval = setInterval(() => {
       setDotCount((prev) => (prev % 3) + 1);
-    }, mainCycle / 6);
+    }, 500); // Keep this relatively quick
     
-    // Change messages over time (more frequent changes)
+    // Change messages over time with a comfortable pace
     const messageInterval = setInterval(() => {
       setMessage((prev) => {
         const currentIndex = messages.indexOf(prev);
         return messages[(currentIndex + 1) % messages.length];
       });
-    }, mainCycle * 1.5);
-    
-    // Icon animation rotation (2:1 ratio - twice as fast as before)
-    const animationInterval = setInterval(() => {
-      setAnimationStep((prev) => (prev + 1) % icons.length);
     }, mainCycle);
     
-    // Rotate dad jokes at a good pace (4.5s to allow for reading)
+    // Icon animation rotation - slower for smoother transitions
+    const animationInterval = setInterval(() => {
+      setAnimationStep((prev) => (prev + 1) % icons.length);
+    }, mainCycle * 1.5);
+    
+    // Rotate dad jokes at a good pace that allows for reading
     const jokeInterval = setInterval(() => {
       setJokeIndex((prev) => (prev + 1) % jokes.length);
-    }, mainCycle * 2);
+    }, mainCycle * 1.5);
     
     return () => {
       clearInterval(dotInterval);
@@ -96,14 +96,23 @@ export default function LoadingState() {
   return (
     <div className="mb-12 py-16 flex flex-col items-center justify-center">
       <div className="relative mb-8">
-        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 via-primary to-purple-500 opacity-20 dark:opacity-30 blur-xl animate-pulse" style={{ animationDuration: "2.25s" }}></div>
-        <div className="relative bg-white dark:bg-gray-900 rounded-full p-6 shadow-xl border border-gray-100 dark:border-gray-800 dark:shadow-[0_0_15px_rgba(16,163,127,0.2)] transition-all duration-200">
-          {icons[animationStep]}
+        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 via-primary to-purple-500 opacity-20 dark:opacity-30 blur-xl animate-pulse" style={{ animationDuration: "3.5s" }}></div>
+        <div className="relative bg-white dark:bg-gray-900 rounded-full p-6 shadow-xl border border-gray-100 dark:border-gray-800 dark:shadow-[0_0_15px_rgba(16,163,127,0.2)] transition-all duration-500">
+          <div 
+            key={animationStep} 
+            className="transition-all duration-500 ease-in-out animate-fadeInOut"
+            style={{ 
+              animationDuration: "2s", 
+              transform: `scale(${animationStep === 0 ? '1' : '0.95'})${animationStep === 2 ? ' rotate(-5deg)' : ''}` 
+            }}
+          >
+            {icons[animationStep]}
+          </div>
         </div>
       </div>
       
       <div className="space-y-4 text-center">
-        <p className="text-lg font-medium text-gray-800 dark:text-gray-200 transition-colors duration-300 dark:neon-text italic min-h-[4rem] flex items-center justify-center">
+        <p className="text-lg font-medium text-gray-800 dark:text-gray-200 transition-all duration-700 ease-in-out dark:neon-text italic min-h-[4rem] flex items-center justify-center">
           "{jokes[jokeIndex] || "Loading jokes..."}"
         </p>
       </div>
