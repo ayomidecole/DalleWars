@@ -27,9 +27,9 @@ export default function LoadingState() {
   ];
 
   const icons = [
-    <Wand2 key="wand" className="h-7 w-7 text-primary animate-bounce" />,
-    <Sparkles key="sparkles" className="h-7 w-7 text-amber-500 animate-pulse" />,
-    <Palette key="palette" className="h-7 w-7 text-violet-500 animate-ping opacity-75" />
+    <Wand2 key="wand" className="h-7 w-7 text-primary animate-pulse" style={{ animationDuration: "4.5s" }} />,
+    <Sparkles key="sparkles" className="h-7 w-7 text-amber-500 animate-pulse" style={{ animationDuration: "4.5s" }} />,
+    <Palette key="palette" className="h-7 w-7 text-violet-500 animate-pulse" style={{ animationDuration: "4.5s" }} />
   ];
   
   // Fetch some fresh jokes when component mounts
@@ -55,28 +55,31 @@ export default function LoadingState() {
   }, []);
   
   useEffect(() => {
-    // Animate dots for loading ellipsis
+    // Define a consistent base animation cycle of 4.5 seconds
+    const mainCycle = 4500;
+    
+    // Animate dots for loading ellipsis (9 cycles during one joke rotation)
     const dotInterval = setInterval(() => {
       setDotCount((prev) => (prev % 3) + 1);
-    }, 500);
+    }, mainCycle / 9);
     
-    // Change messages over time
+    // Change messages over time (1.5 message changes per joke)
     const messageInterval = setInterval(() => {
       setMessage((prev) => {
         const currentIndex = messages.indexOf(prev);
         return messages[(currentIndex + 1) % messages.length];
       });
-    }, 3000);
+    }, mainCycle / 1.5);
     
-    // Cycle through animation icons
+    // Synchronize icon animation with joke rotation (1:1 ratio)
     const animationInterval = setInterval(() => {
       setAnimationStep((prev) => (prev + 1) % icons.length);
-    }, 2000);
+    }, mainCycle);
     
     // Rotate dad jokes with timing matched to CSS animation (4.5s)
     const jokeInterval = setInterval(() => {
       setJokeIndex((prev) => (prev + 1) % jokes.length);
-    }, 4500);
+    }, mainCycle);
     
     return () => {
       clearInterval(dotInterval);
@@ -93,7 +96,7 @@ export default function LoadingState() {
   return (
     <div className="mb-12 py-16 flex flex-col items-center justify-center">
       <div className="relative mb-8">
-        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 via-primary to-purple-500 opacity-20 dark:opacity-30 blur-xl animate-pulse"></div>
+        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 via-primary to-purple-500 opacity-20 dark:opacity-30 blur-xl animate-pulse" style={{ animationDuration: "4.5s" }}></div>
         <div className="relative bg-white dark:bg-gray-900 rounded-full p-6 shadow-xl border border-gray-100 dark:border-gray-800 dark:shadow-[0_0_15px_rgba(16,163,127,0.2)] transition-all duration-200">
           {icons[animationStep]}
         </div>
@@ -106,9 +109,9 @@ export default function LoadingState() {
       </div>
       
       <div className="mt-6 flex justify-center space-x-3">
-        <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-bounce" style={{ animationDelay: "0ms" }}></div>
-        <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-bounce" style={{ animationDelay: "150ms" }}></div>
-        <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-bounce" style={{ animationDelay: "300ms" }}></div>
+        <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-pulse" style={{ animationDuration: "1.5s", animationDelay: "0ms" }}></div>
+        <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-pulse" style={{ animationDuration: "1.5s", animationDelay: "500ms" }}></div>
+        <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-pulse" style={{ animationDuration: "1.5s", animationDelay: "1000ms" }}></div>
       </div>
     </div>
   );
