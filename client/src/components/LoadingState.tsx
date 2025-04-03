@@ -119,8 +119,8 @@ export default function LoadingState() {
       
       <div className="mt-6 flex justify-center space-x-3">
         <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-slow-bounce" style={{ animationDelay: "0ms" }}></div>
-        <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-slow-bounce" style={{ animationDelay: "300ms" }}></div>
-        <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-slow-bounce" style={{ animationDelay: "600ms" }}></div>
+        <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-slow-bounce" style={{ animationDelay: "200ms" }}></div>
+        <div className="h-2 w-2 rounded-full bg-primary dark:bg-primary dark:shadow-[0_0_8px_rgba(16,163,127,0.6)] animate-slow-bounce" style={{ animationDelay: "400ms" }}></div>
       </div>
     </div>
   );
