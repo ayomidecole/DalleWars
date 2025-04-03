@@ -103,9 +103,6 @@ export default function LoadingState() {
         <p className="text-lg font-medium text-gray-800 dark:text-gray-200 transition-colors duration-300 dark:neon-text italic min-h-[4rem] flex items-center justify-center">
           "{jokes[jokeIndex] || "Loading jokes..."}"
         </p>
-        <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-200">
-          Creating both DALL·E 2 and DALL·E 3 versions
-        </p>
       </div>
       
       <div className="mt-6 flex justify-center space-x-3">
