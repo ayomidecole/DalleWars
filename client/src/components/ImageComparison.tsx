@@ -150,7 +150,7 @@ export default function ImageComparison({ loading, imagePair }: ImageComparisonP
                   size="default"
                   className={votedPairs[pair.id] === "dalle2" 
                     ? "bg-gray-800 text-white hover:bg-gray-700 w-full py-2 text-sm font-medium dark:bg-gray-700 dark:hover:bg-gray-600 transition-all duration-300 dark:shadow-[0_0_10px_rgba(255,255,255,0.2)]" 
-                    : "border-2 border-gray-800 text-gray-800 bg-white font-medium hover:bg-gray-800 hover:text-white w-full py-2 text-sm dark:border-gray-500 dark:text-gray-300 dark:hover:bg-gray-700 dark:bg-transparent transition-all duration-300 dark:group-hover:shadow-[0_0_15px_rgba(255,255,255,0.25)]"}
+                    : "border-2 border-gray-800 bg-white font-medium w-full py-2 text-sm dark:border-gray-500 dark:bg-transparent transition-all duration-300 dark:group-hover:shadow-[0_0_15px_rgba(255,255,255,0.25)] hover:bg-gray-100 dark:hover:bg-gray-800"}
                   onClick={() => handleVote(pair.id, false)}
                   disabled={!!votedPairs[pair.id]}
                 >
@@ -189,7 +189,7 @@ export default function ImageComparison({ loading, imagePair }: ImageComparisonP
                   size="default"
                   className={votedPairs[pair.id] === "dalle3" 
                     ? "bg-primary text-white hover:bg-primary/90 w-full py-2 text-sm font-medium dark:btn-primary transition-all duration-300 dark:shadow-[0_0_15px_rgba(16,163,127,0.3)]" 
-                    : "border-2 border-primary text-primary bg-white font-medium hover:bg-primary hover:text-white w-full py-2 text-sm dark:border-primary/80 dark:text-primary/90 dark:hover:bg-primary/80 dark:bg-transparent transition-all duration-300 dark:group-hover:shadow-[0_0_18px_rgba(16,163,127,0.35)]"}
+                    : "border-2 border-primary bg-white font-medium w-full py-2 text-sm dark:border-primary/80 dark:bg-transparent transition-all duration-300 dark:group-hover:shadow-[0_0_18px_rgba(16,163,127,0.35)] hover:bg-green-50 dark:hover:bg-green-950/30"}
                   onClick={() => handleVote(pair.id, true)}
                   disabled={!!votedPairs[pair.id]}
                 >
