@@ -12,6 +12,10 @@
     --violet-rgb: 139, 92, 246;
     --blue-rgb: 59, 130, 246;
     --green-rgb: 34, 197, 94;
+    --button-light-glow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --button-light-glow-hover: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --button-primary-glow: 0 4px 6px rgba(16, 163, 127, 0.2);
+    --button-primary-glow-hover: 0 10px 15px rgba(16, 163, 127, 0.15);
   }
 
   .dark {
@@ -19,6 +23,10 @@
     --primary-glow: 0 0 22px rgba(16, 163, 127, 0.4);
     --score-glow: 0 0 28px rgba(16, 163, 127, 0.35);
     --score-hover-glow: 0 0 38px rgba(16, 163, 127, 0.55);
+    --button-light-glow: 0 0 10px rgba(255, 255, 255, 0.1);
+    --button-light-glow-hover: 0 0 15px rgba(255, 255, 255, 0.2);
+    --button-primary-glow: 0 0 12px rgba(16, 163, 127, 0.3);
+    --button-primary-glow-hover: 0 0 18px rgba(16, 163, 127, 0.4);
   }
 
   * {
@@ -38,14 +46,24 @@
     box-shadow: 0 0 8px rgba(16, 163, 127, 0.4);
   }
 
+  /* Image card transitions - both light and dark modes */
+  .image-card {
+    box-shadow: var(--button-light-glow);
+    transition: all 0.3s ease;
+  }
+  
+  .image-card:hover {
+    box-shadow: var(--button-light-glow-hover);
+    transform: translateY(-2px) scale(1.01);
+  }
+  
+  /* Dark mode specific image card effects */
   .dark .image-card {
     box-shadow: var(--neon-glow);
-    transition: all 0.3s ease;
   }
   
   .dark .image-card:hover {
     box-shadow: 0 0 25px rgba(16, 163, 127, 0.6);
-    transform: translateY(-2px) scale(1.01);
   }
   
   /* Custom fade animations for loading state - slower phases */
@@ -71,24 +89,43 @@
     opacity: 1;
   }
 
+  /* Button animations for both modes */
+  .btn-primary {
+    box-shadow: var(--button-primary-glow);
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    box-shadow: var(--button-primary-glow-hover);
+  }
+  
+  /* Dark mode specific button glow */
   .dark .btn-primary {
     box-shadow: var(--primary-glow);
-    transition: all 0.3s ease;
   }
   
   .dark .btn-primary:hover {
     box-shadow: 0 0 30px rgba(16, 163, 127, 0.5);
   }
 
-  /* Glow for dark mode cards */
+  /* Glow for cards - both light and dark modes */
+  .card-glow {
+    transition: all 0.3s ease;
+    box-shadow: var(--button-light-glow);
+  }
+  
+  .card-glow:hover {
+    box-shadow: var(--button-light-glow-hover);
+    transform: translateY(-3px);
+  }
+  
+  /* Dark mode specific card glow */
   .dark .card-glow {
     box-shadow: 0 0 18px rgba(16, 163, 127, 0.22);
-    transition: all 0.3s ease;
   }
   
   .dark .card-glow:hover {
     box-shadow: 0 0 30px rgba(16, 163, 127, 0.35);
-    transform: translateY(-3px);
   }
 
   /* Text glow for dark mode headings */
@@ -199,29 +236,33 @@
     animation: borderGlow 4s infinite;
   }
   
-  /* Score styles for dark mode */
-  .dark .score-animate {
+  /* Score styles for both modes */
+  .score-animate {
     transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
   }
   
-  .dark .score-animate:hover {
+  .score-animate:hover {
     transform: translateY(-3px) scale(1.03);
-    filter: brightness(1.2);
+    filter: brightness(1.05);
     letter-spacing: 0.03em;
   }
   
-  /* Model name animation for dark mode */
-  .dark .model-name {
+  /* Dark mode specific score styles */
+  .dark .score-animate:hover {
+    filter: brightness(1.2);
+  }
+  
+  /* Model name animation for both modes */
+  .model-name {
     transition: all 0.3s ease;
     position: relative;
   }
   
-  .dark .model-name:hover {
+  .model-name:hover {
     transform: scale(1.05);
-    text-shadow: 0 0 15px rgba(var(--primary-rgb), 0.7);
   }
   
-  .dark .model-name::after {
+  .model-name::after {
     content: '';
     position: absolute;
     bottom: -2px;
@@ -230,29 +271,46 @@
     height: 1px;
     background: linear-gradient(90deg, 
       transparent 0%, 
-      rgba(var(--primary-rgb), 0.7) 50%, 
+      rgba(var(--primary-rgb), 0.5) 50%, 
       transparent 100%);
     transform: scaleX(0);
     transition: transform 0.3s ease;
   }
   
-  .dark .model-name:hover::after {
+  .model-name:hover::after {
     transform: scaleX(1);
   }
   
-  /* Group hover effects for score items */
-  .dark .score-item {
+  /* Dark mode specific model name effects */
+  .dark .model-name:hover {
+    text-shadow: 0 0 15px rgba(var(--primary-rgb), 0.7);
+  }
+  
+  .dark .model-name::after {
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(var(--primary-rgb), 0.7) 50%, 
+      transparent 100%);
+  }
+  
+  /* Group hover effects for score items - both modes */
+  .score-item {
     transition: all 0.3s ease;
   }
   
-  .dark .score-group:hover .score-item {
-    opacity: 0.7;
+  .score-group:hover .score-item {
+    opacity: 0.8;
   }
   
-  .dark .score-group:hover .score-item:hover {
+  .score-group:hover .score-item:hover {
     opacity: 1;
     transform: scale(1.08);
     z-index: 10;
+  }
+  
+  /* Dark mode specific score item effects */
+  .dark .score-group:hover .score-item {
+    opacity: 0.7;
   }
 
   /* Mic button animation classes - shared styles */

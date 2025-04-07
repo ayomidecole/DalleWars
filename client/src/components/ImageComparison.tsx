@@ -149,8 +149,8 @@ export default function ImageComparison({ loading, imagePair }: ImageComparisonP
                   variant={votedPairs[pair.id] === "dalle2" ? "default" : "outline"}
                   size="default"
                   className={votedPairs[pair.id] === "dalle2" 
-                    ? "bg-gray-800 text-white hover:bg-gray-700 w-full py-2 text-sm font-medium dark:bg-gray-700 dark:hover:bg-gray-600 transition-all duration-300 dark:shadow-[0_0_10px_rgba(255,255,255,0.2)]" 
-                    : "border-2 border-gray-800 bg-white font-medium w-full py-2 text-sm dark:border-gray-500 dark:bg-transparent transition-all duration-300 dark:group-hover:shadow-[0_0_15px_rgba(255,255,255,0.25)] hover:bg-gray-100 dark:hover:bg-gray-800"}
+                    ? "bg-gray-800 text-white hover:bg-gray-700 w-full py-2 text-sm font-medium shadow-md hover:shadow-lg dark:bg-gray-700 dark:hover:bg-gray-600 transition-all duration-300 dark:shadow-[0_0_10px_rgba(255,255,255,0.2)] transform hover:-translate-y-[2px]" 
+                    : "border-2 border-gray-800 bg-white font-medium w-full py-2 text-sm dark:border-gray-500 dark:bg-transparent transition-all duration-300 shadow-sm hover:shadow-md dark:group-hover:shadow-[0_0_15px_rgba(255,255,255,0.25)] hover:bg-gray-100 dark:hover:bg-gray-800 transform hover:-translate-y-[2px]"}
                   onClick={() => handleVote(pair.id, false)}
                   disabled={!!votedPairs[pair.id]}
                 >
@@ -188,8 +188,8 @@ export default function ImageComparison({ loading, imagePair }: ImageComparisonP
                   variant={votedPairs[pair.id] === "dalle3" ? "default" : "outline"}
                   size="default"
                   className={votedPairs[pair.id] === "dalle3" 
-                    ? "bg-primary text-white hover:bg-primary/90 w-full py-2 text-sm font-medium dark:btn-primary transition-all duration-300 dark:shadow-[0_0_15px_rgba(16,163,127,0.3)]" 
-                    : "border-2 border-primary bg-white font-medium w-full py-2 text-sm dark:border-primary/80 dark:bg-transparent transition-all duration-300 dark:group-hover:shadow-[0_0_18px_rgba(16,163,127,0.35)] hover:bg-green-50 dark:hover:bg-green-950/30"}
+                    ? "bg-primary text-white hover:bg-primary/90 w-full py-2 text-sm font-medium shadow-md hover:shadow-lg dark:btn-primary transition-all duration-300 dark:shadow-[0_0_15px_rgba(16,163,127,0.3)] transform hover:-translate-y-[2px]" 
+                    : "border-2 border-primary bg-white font-medium w-full py-2 text-sm shadow-sm hover:shadow-md dark:border-primary/80 dark:bg-transparent transition-all duration-300 dark:group-hover:shadow-[0_0_18px_rgba(16,163,127,0.35)] hover:bg-green-50 dark:hover:bg-green-950/30 transform hover:-translate-y-[2px] hover:border-primary/80"}
                   onClick={() => handleVote(pair.id, true)}
                   disabled={!!votedPairs[pair.id]}
                 >
